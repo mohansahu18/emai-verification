@@ -18,7 +18,7 @@ export default function ThreePage() {
   const { totalCredits, usedCredits, remainingCredits } = useSelector((state) => state.credits);
 
   useEffect(() => {
-    dispatch(fetchCreditsHistory());
+    dispatch(fetchCreditsHistory({ limit: 5 }));
   }, [dispatch]);
   useEffect(() => {
     if (!totalCredits) {
