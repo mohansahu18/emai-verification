@@ -18,12 +18,58 @@ module.exports = {
       * @param {*} res 
       */
     getAllList: async (req, res) => {
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const search = req.query.search || "";
+        const status = req.query.status || "";
+        const skip = (page - 1) * limit;
+
         try {
-            const files = await EmailList.find().sort({ createdAt: -1 });
-            return res.status(200).json(Response.success("data fetch successfully", files));
+            const filterCriteria = {};
+
+            // Add search filter for listName (case-insensitive)
+            if (search) {
+                filterCriteria.listName = { $regex: search, $options: "i" };
+            }
+
+            // Add status filter if provided
+            if (status) {
+                filterCriteria.status = status;
+            }
+
+            // Fetch filtered and paginated data
+            const emailLists = await EmailList.find(filterCriteria)
+                .sort({ createdAt: -1 })
+                .skip(skip)
+                .limit(limit);
+
+            // Fetch total count for pagination metadata
+            const totalEmailLists = await EmailList.countDocuments(filterCriteria);
+
+            if (emailLists.length > 0) {
+                res.status(200).json(
+                    Response.success("Email lists fetched successfully", {
+                        listData: emailLists,
+                        totalEmailLists,
+                        page,
+                        listsPerPage: limit
+                    })
+                );
+            } else {
+                res.status(200).json(
+                    Response.success("No email lists found", {
+                        listData: [],
+                        totalEmailLists: 0,
+                        page,
+                        listsPerPage: limit
+                    })
+                );
+            }
         } catch (error) {
-            Logs.error('unable to get data:', error);
-            res.status(500).json(Response.error("Internal Server Error", error));
+            Logs.error("Error fetching email lists:", error);
+            res.status(500).json(
+                Response.error("There was an error while fetching email lists", error)
+            );
         }
     },
 

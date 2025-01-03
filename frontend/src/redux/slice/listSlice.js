@@ -165,7 +165,7 @@ const listSlice = createSlice({
       })
       .addCase(fetchLists.fulfilled, (state, action) => {
         state.loading = false;
-        state.data = action.payload.data;
+        state.data = action?.payload?.data?.listData;
         state.completedLists = state.data.filter((list) => list.status === 'COMPLETED');
         state.unprocessedLists = state.data.filter((list) => list.status === 'UNPROCESSED');
         state.processingLists = state.data.filter((list) => list.status === 'PROCESSING');

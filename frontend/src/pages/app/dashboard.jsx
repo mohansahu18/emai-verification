@@ -116,10 +116,10 @@ export default function Page() {
       block: 'center',
     });
   };
-  useEffect(() => {
-    dispatch(fetchLists());
-    // eslint-disable-next-line
-  }, [unprocessedLists.length]);
+  // useEffect(() => {
+  //   dispatch(fetchLists());
+  //   // eslint-disable-next-line
+  // }, [unprocessedLists.length]);
 
   return (
     <>
