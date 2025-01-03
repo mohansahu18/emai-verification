@@ -1,21 +1,28 @@
-import { useCallback } from 'react';
-
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
 
 import { Iconify } from 'src/components/iconify';
+import { fetchLists } from 'src/redux/slice/listSlice';
+import { useDispatch } from 'react-redux';
 
 // ----------------------------------------------------------------------
 
 export function DashboardTableToolbar({ filters, onResetPage }) {
-  const handleFilterName = useCallback(
-    (event) => {
-      onResetPage();
-      filters.setState({ name: event.target.value });
-    },
-    [filters, onResetPage]
-  );
+  const dispatch = useDispatch();
+  const handleFilterName = (event) => {
+    const searchValue = event.target.value;
+    onResetPage();
+    filters.setState({ name: searchValue });
+    dispatch(
+      fetchLists({
+        search: searchValue,
+        // status: filters.state.status,
+        page: 1, // Reset to the first page
+        rowsPerPage: filters.state.rowsPerPage,
+      })
+    );
+  };
 
   return (
     <Stack

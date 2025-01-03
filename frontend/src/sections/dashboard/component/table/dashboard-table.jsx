@@ -161,10 +161,20 @@ export function DashboardTable() {
 
   const handleFilterStatus = useCallback(
     (event, newValue) => {
+      // debugger;
       table.onResetPage();
       filters.setState({ status: newValue });
+      dispatch(
+        fetchLists({
+          search: searchValue,
+          status: newValue,
+          page: 1, // Reset to the first page
+          rowsPerPage: filters.state.rowsPerPage,
+        })
+      );
     },
-    [filters, table]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [filters, table, dispatch]
   );
   const isStartVerification = useSelector((state) => state.fileUpload.isStartVerification);
   const isVerificationCompleted = useSelector((state) => state.fileUpload.isVerificationCompleted);
@@ -236,13 +246,14 @@ export function DashboardTable() {
   };
 
   useEffect(() => {
+    // debugger;
     if (selected === 'processing') {
       return;
     }
 
     if (selected === 'all') {
       dispatch(
-        fetchLists({ type: selected, page: page + 1, limit: rowsPerPage, search: searchValue })
+        fetchLists({ status: selected, page: page + 1, limit: rowsPerPage, search: searchValue })
       );
     } else {
       dispatch(

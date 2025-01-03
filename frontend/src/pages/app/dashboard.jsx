@@ -19,7 +19,6 @@ import { DashboardChart } from 'src/sections/dashboard/component/chart/dashboard
 import VerifySingleEmail from 'src/sections/dashboard/component/verify-single-email/verify-single-email';
 import axios, { endpoints } from 'src/utils/axios';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchLists } from 'src/redux/slice/listSlice';
 import { deductCredit, fetchCreditBalance } from 'src/redux/slice/creditSlice';
 
 // ----------------------------------------------------------------------
