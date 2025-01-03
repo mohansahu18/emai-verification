@@ -33,8 +33,9 @@ module.exports = {
             }
 
             // Add status filter if provided
-            if (status) {
-                filterCriteria.status = status;
+            if (status !== "all") {
+                filterCriteria.status = status.toUpperCase()
+                // !== "ALL" ? status.toUpperCase() : "";
             }
 
             // Fetch filtered and paginated data
