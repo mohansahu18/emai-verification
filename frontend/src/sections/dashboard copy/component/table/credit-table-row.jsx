@@ -10,9 +10,33 @@ import { Label } from 'src/components/label';
 
 export function CreditTableRow({ row, selected }) {
   const timezone = ', (UTC+05:30) Asia/Kolkata';
+  console.log(row);
+
   return (
     <TableRow hover>
       <TableCell width={300}>
+        <Stack
+          spacing={2}
+          direction="row"
+          alignItems="center"
+          sx={{
+            typography: 'body2',
+            flex: '1 1 auto',
+            alignItems: 'flex-start',
+          }}
+        >
+          <Label
+            variant="soft"
+            color={
+              (row.credits === 'Consumed' && 'error') ||
+              (row.credits === 'Alloted' && 'success') ||
+              'default'
+            }
+          >
+            {row.status}
+          </Label>
+          {/* </Tooltip> */}
+        </Stack>
         <Stack spacing={2} direction="row" alignItems="center">
           <Tooltip
             arrow

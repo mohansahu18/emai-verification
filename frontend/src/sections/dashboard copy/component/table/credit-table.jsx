@@ -271,7 +271,7 @@ export function CreditTable() {
                 )
               }
             />
-
+            {/* 
             <TableBody>
               {tableData &&
                 tableData.map((row, index) => (
@@ -297,6 +297,33 @@ export function CreditTable() {
                 <TableNoData
                   title="Not Search Found"
                   description={`No search found with keyword "${filters.state.name}"`}
+                  notFound={notFound}
+                />
+              )}
+            </TableBody> */}
+            <TableBody>
+              {dataFiltered.length > 0 ? (
+                <>
+                  {dataInPage.map((row, index) => (
+                    <CreditTableRow
+                      key={index}
+                      row={row}
+                      selected={table.selected.includes(row.id)}
+                    />
+                  ))}
+                  <TableEmptyRows
+                    height={table.dense ? 56 : 76}
+                    emptyRows={emptyRows(table.page, table.rowsPerPage, dataFiltered.length)}
+                  />
+                </>
+              ) : (
+                <TableNoData
+                  title={filters.state.name ? 'No Search Results' : 'No Data Available'}
+                  description={
+                    filters.state.name
+                      ? `No results found for "${filters.state.name}"`
+                      : 'No data available in the table'
+                  }
                   notFound={notFound}
                 />
               )}
