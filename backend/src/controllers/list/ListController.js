@@ -21,7 +21,7 @@ module.exports = {
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 10;
         const search = req.query.search || "";
-        const status = req.query.status || "";
+        // const status = req.query.status || "";
         const skip = (page - 1) * limit;
 
         try {
@@ -33,10 +33,10 @@ module.exports = {
             }
 
             // Add status filter if provided
-            if (status !== "all") {
-                filterCriteria.status = status.toUpperCase()
-                // !== "ALL" ? status.toUpperCase() : "";
-            }
+            // if (status !== "all") {
+            //     filterCriteria.status = status.toUpperCase()
+            //     // !== "ALL" ? status.toUpperCase() : "";
+            // }
 
             // Fetch filtered and paginated data
             const emailLists = await EmailList.find(filterCriteria)
