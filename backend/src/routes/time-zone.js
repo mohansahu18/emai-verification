@@ -8,8 +8,4 @@ router.get("/", TimeZoneController.getTimezonesByCountry)
 // Routes for saving time zone
 router.post("/", TimeZoneController.saveTimeZone)
 
-
-
-
-
 module.exports = router;

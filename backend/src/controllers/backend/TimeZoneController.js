@@ -1,5 +1,4 @@
 const Response = require('../../utils/response-util')
-
 const ct = require('countries-and-timezones');
 const User = require('../../models/User');
 const { getGmtOffset } = require('../../utils/timezone-util');

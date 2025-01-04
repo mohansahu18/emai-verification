@@ -2,11 +2,7 @@ const express = require('express');
 const router = express.Router();
 const ApiController = require('../controllers/api/ApiController.js');
 
+// Routes for testing
 router.get('/sample', ApiController.sample);
-
-
-//import lists routes
-const listsRoutes = require('./lists.js');
-router.use('/lists', listsRoutes);
 
 module.exports = router;

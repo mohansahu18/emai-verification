@@ -183,7 +183,6 @@ module.exports = {
    * @param {*} res
    * @returns User
    */
-
   deleteOne: async (req, res) => {
     try {
       // Define your validation rules here
@@ -228,26 +227,4 @@ module.exports = {
     }
   },
 
-  timeZone: async (req, res) => {
-    if (!req.params.timeZone) {
-      return res.status(400).json(Response.error("Time zone is required"));
-    }
-    try {
-      //Since we cant use / in the part params
-      const updatedTimezone = req.params.timeZone.replace("%2F", "/");
-      const timeZone = await User.findOneAndUpdate(
-        { userId: req.user.id },
-        { timeZone: updatedTimezone },
-        { new: true }
-      );
-      return res.json(
-        Response.success("Time zone updated successfully", timeZone)
-      );
-    } catch (err) {
-      Logs.error(err);
-      res
-        .status(500)
-        .json(Response.error("There is some error while updating time zone"));
-    }
-  },
 };

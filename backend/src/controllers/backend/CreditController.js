@@ -85,10 +85,10 @@ const creditController = {
     },
 
     /**
-       * Get The List Credit history
-       * @param {*} req 
-       * @param {*} res 
-       */
+    * Get The List Credit history
+    * @param {*} req 
+    * @param {*} res 
+    */
     creditHistory: async (req, res) => {
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 10;

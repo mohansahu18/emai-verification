@@ -1,6 +1,6 @@
 const Logs = require('../../utils/logs-util.js');
 const Response = require('../../utils/response-util.js');
-const { verifySingleEmail, uploadFile, getBulkStatus, startBulkEmailVerification, removeBulkEmailList, calculateStats, downloadBulkEmailList } = require('../../services/bouncify-service.js');
+const { verifySingleEmail, uploadFile, getBulkStatus, startBulkEmailVerification, removeBulkEmailList, calculateStats, } = require('../../services/bouncify-service.js');
 const EmailList = require('../../models/EmailList.js');
 const FormData = require('form-data');
 const { body, validationResult } = require('express-validator');
@@ -31,13 +31,6 @@ module.exports = {
                 filterCriteria.listName = { $regex: search, $options: "i" };
             }
 
-            // Add status filter if provided
-            // if (status !== "all") {
-            //     filterCriteria.status = status.toUpperCase()
-            //     // !== "ALL" ? status.toUpperCase() : "";
-            // }
-
-            // Fetch filtered and paginated data
             const emailLists = await EmailList.find(filterCriteria)
                 .sort({ createdAt: -1 })
                 .skip(skip)
@@ -292,10 +285,10 @@ module.exports = {
     },
 
     /**
- * Get The Status Of Bulk Email List
-  * @param {*} req 
-  * @param {*} res 
-  */
+    * Get The Status Of Bulk Email List
+    * @param {*} req 
+    * @param {*} res 
+    */
     getStatus: async (req, res) => {
         try {
             const { jobId } = req.query;
