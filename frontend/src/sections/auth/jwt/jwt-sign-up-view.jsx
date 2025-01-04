@@ -24,22 +24,16 @@ import { useBoolean } from 'src/hooks/use-boolean';
 import { Iconify } from 'src/components/iconify';
 import { Form, Field } from 'src/components/hook-form';
 
-// import { signUp } from 'src/auth/context/jwt';
+import { signUp } from 'src/auth/context/jwt';
 import { useAuthContext } from 'src/auth/hooks';
 
 // ----------------------------------------------------------------------
 
-// const intialValue = {
-//   user:false,
-//   isVerified:false,
-
-// }
-
 const defaultValues = {
-  firstName: 'Hello',
-  lastName: 'Friend',
-  email: 'hello@Pabbly.com',
-  password: '@demo1',
+  firstName: '',
+  lastName: '',
+  email: '',
+  password: '',
 };
 
 export const SignUpSchema = zod.object({
@@ -82,9 +76,6 @@ export function JwtSignUpView() {
   const { checkUserSession } = useAuthContext();
 
   const [openSnackbar, setOpenSnackbar] = useState(false);
-  const handleOpenSnackbar = () => {
-    setOpenSnackbar(true);
-  };
 
   const handleCloseSnackbar = () => {
     setOpenSnackbar(false);
@@ -101,35 +92,6 @@ export function JwtSignUpView() {
   const [user, setUser] = useState(defaultValues);
   const [resendEmail, setResendEmail] = useState(true);
 
-  // Local Database
-
-  const threeCondition = [
-    {
-      firstName: 'Hello',
-      lastName: 'Friend',
-      email: 'hello@Pabbly.com',
-      password: '@demo1',
-      isVerified: false,
-      isExist: false,
-    },
-    {
-      firstName: 'pabbly',
-      lastName: 'Friend',
-      email: 'pabbly@Pabbly.com',
-      password: '@demo1',
-      isVerified: true,
-      isExist: true,
-    },
-    {
-      firstName: 'magnetbrains',
-      lastName: 'Friend',
-      email: 'magnetbrains@Pabbly.com',
-      password: '@demo1',
-      isVerified: false,
-      isExist: true,
-    },
-  ];
-
   const methods = useForm({
     resolver: zodResolver(SignUpSchema),
     defaultValues,
@@ -145,38 +107,20 @@ export function JwtSignUpView() {
       setErrorMsg('Please complete the CAPTCHA');
       return;
     }
+    try {
+      await signUp({
+        email: data.email,
+        password: data.password,
+        first_name: data.firstName,
+        last_name: data.lastName,
+      });
+      await checkUserSession?.();
 
-    threeCondition.forEach((val) => {
-      if (data.email === val.email) {
-        setUser(val);
-      }
-    });
-
-    handleOpenSnackbar();
-
-    // setTimeout(()=>{setUserAlreadyExist(false)},5000)
-
-    // setTimeout(()=>{
-    //   router.push(`${paths.auth.jwt.confirm}`)
-    // },2000)
-
-    // router.push(`${paths.auth.jwt.confirm}`)
-
-    // try {
-    //   await signUp({
-    //     email: data.email,
-    //     password: data.password,
-    //     firstName: data.firstName,
-    //     lastName: data.lastName,
-    //   });
-    //   await checkUserSession?.();
-
-    //   // router.refresh();
-
-    // } catch (error) {
-    //   console.error(error);
-    //   setErrorMsg(error instanceof Error ? error.message : error);
-    // }
+      router.refresh();
+    } catch (error) {
+      console.error(error);
+      setErrorMsg(error instanceof Error ? error.message : error.message);
+    }
   });
 
   const onResendEmail = () => {

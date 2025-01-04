@@ -15,8 +15,14 @@ const userSchema = new mongoose.Schema(
       default: Date.now,
     },
     timezone: {
-      key: { type: String, },
-      value: { type: String, },
+      key: {
+        type: String,
+        default: "Asia/Kolkata"
+      },
+      value: {
+        type: String,
+        default: "(GMT+530)"
+      },
     },
   }
 );

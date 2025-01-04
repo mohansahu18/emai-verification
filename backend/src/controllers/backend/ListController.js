@@ -17,6 +17,7 @@ module.exports = {
       * @param {*} res 
       */
     getAllList: async (req, res) => {
+        const userId = req?.user?.id;
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 10;
         const search = req.query.search || "";
@@ -24,7 +25,7 @@ module.exports = {
         const skip = (page - 1) * limit;
 
         try {
-            const filterCriteria = {};
+            const filterCriteria = { userId };
 
             // Add search filter for listName (case-insensitive)
             if (search) {
