@@ -14,6 +14,7 @@ import {
   setUploadedListId,
 } from 'src/redux/slice/uploadSlice';
 
+import { setList } from 'src/redux/slice/listSlice';
 import { Iconify } from '../iconify';
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB in bytes
@@ -113,7 +114,7 @@ const FileUpload = forwardRef(
                 const newLists = [res.data.data, ...lists];
 
                 dispatch(setUploadedListId(res.data.data._id));
-                // dispatch(setList(newLists));
+                dispatch(setList(newLists));
                 dispatch(finishUpload());
                 // dispatch(fetchLists());
               }
