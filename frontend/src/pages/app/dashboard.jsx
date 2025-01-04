@@ -20,6 +20,7 @@ import VerifySingleEmail from 'src/sections/dashboard/component/verify-single-em
 import axios, { endpoints } from 'src/utils/axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { deductCredit, fetchCreditBalance } from 'src/redux/slice/creditSlice';
+import { fetchLists } from 'src/redux/slice/listSlice';
 
 // ----------------------------------------------------------------------
 
@@ -39,7 +40,7 @@ export default function Page() {
     message: '',
     status: '',
   });
-  const unprocessedLists = useSelector((state) => state.list.unprocessedLists);
+  const processingLists = useSelector((state) => state.list.processingLists);
   const { totalCredits, usedCredits, remainingCredits } = useSelector((state) => state.credits);
 
   const dispatch = useDispatch();
@@ -115,10 +116,10 @@ export default function Page() {
       block: 'center',
     });
   };
-  // useEffect(() => {
-  //   dispatch(fetchLists());
-  //   // eslint-disable-next-line
-  // }, [unprocessedLists.length]);
+  useEffect(() => {
+    dispatch(fetchLists());
+    // eslint-disable-next-line
+  }, [dispatch, processingLists.length]);
 
   return (
     <>

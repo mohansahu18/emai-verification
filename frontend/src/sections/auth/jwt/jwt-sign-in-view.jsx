@@ -71,8 +71,8 @@ export function JwtSignInView() {
   const password = useBoolean();
 
   const defaultValues = {
-    email: 'mohansahu18111811@gmail.com',
-    password: '123456',
+    email: import.meta.env.VITE_DEFAULT_EMAIL,
+    password: import.meta.env.VITE_DEFAULT_PASSWORD,
   };
 
   const methods = useForm({

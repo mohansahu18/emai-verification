@@ -1,20 +1,8 @@
-const Response = require('../../utils/response')
+const Response = require('../../utils/response-util')
 
 const ct = require('countries-and-timezones');
 const User = require('../../models/User');
-// Function to get GMT offset for a timezone
-function getGmtOffset(timezone) {
-    const timezoneData = ct.getTimezone(timezone);
-
-    if (!timezoneData) {
-        throw new Error(`Invalid timezone: ${timezone}`);
-    }
-
-    const date = new Date();
-    const utcOffset = -date.getTimezoneOffset() / 60; // Get UTC offset in hours
-    const timezoneOffset = ct.getTimezone(timezone).utcOffset;
-    return `(GMT${timezoneOffset >= 0 ? '+' : ''}${timezoneOffset})`;
-}
+const { getGmtOffset } = require('../../utils/timezone-util');
 
 module.exports = {
     /**

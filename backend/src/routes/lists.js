@@ -1,7 +1,7 @@
 const express = require('express');
-const ListController = require('../controllers/list/ListController');
+const ListController = require('../controllers/backend/ListController.js');
 const router = express.Router();
-const { upload, handleMulterError } = require('../middlewares/multer');
+const { upload, handleMulterError } = require('../middlewares/multer-middleware.js');
 
 // Routes for fetching stats
 router.get("/stats", ListController.getStats);
@@ -16,7 +16,7 @@ router.get("/", ListController.getAllList);
 router.get("/get-status", ListController.getStatus);
 
 // Routes for getting details of a specific list
-router.get("/:fileId", ListController.getListById);
+router.get("/:listId", ListController.getListById);
 
 // Route for validating a single email
 router.post('/validate-single', ListController.validateSingleEmail);

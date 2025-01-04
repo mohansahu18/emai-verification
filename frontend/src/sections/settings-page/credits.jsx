@@ -7,7 +7,7 @@ import { Box, useMediaQuery } from '@mui/material';
 import { fetchCreditBalance, fetchCreditsHistory } from 'src/redux/slice/creditSlice';
 import StatsCards from 'src/components/stats-card/stats-card';
 
-import { CreditTable } from '../dashboard copy/component/table/credit-table';
+import { CreditTable } from '../credit-table/credit-table';
 
 const metadata = { title: `Pabbly Email Verification | Credits ` };
 

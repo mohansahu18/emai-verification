@@ -8,7 +8,7 @@ import { deductCredit } from './creditSlice';
 export const fetchLists = createAsyncThunk('list/',
   async (params = {}) => {
     try {
-      const response = await axiosInstance.get(endpoints.get.lists, {
+      const response = await axiosInstance.get(endpoints.list.get, {
         params
       });
 
@@ -83,7 +83,6 @@ export const startBulkVerification = createAsyncThunk(
   'list/startVerification',
   async (jobId, { rejectWithValue }) => {
     try {
-      // debugger
       const response = await axiosInstance.post(endpoints.list.startBulkVerification, {
         jobId,
       });
@@ -165,11 +164,11 @@ const listSlice = createSlice({
       })
       .addCase(fetchLists.fulfilled, (state, action) => {
         state.loading = false;
-        state.data = action?.payload?.data?.listData;
-        state.completedLists = state.data.filter((list) => list.status === 'COMPLETED');
-        state.unprocessedLists = state.data.filter((list) => list.status === 'UNPROCESSED');
-        state.processingLists = state.data.filter((list) => list.status === 'PROCESSING');
-        state.selectedList = state.completedLists[0]
+        state.data = action?.payload?.data;
+        state.completedLists = state.data?.listData?.filter((list) => list?.status === 'COMPLETED');
+        state.unprocessedLists = state.data?.listData?.filter((list) => list?.status === 'UNPROCESSED');
+        state.processingLists = state.data?.listData?.filter((list) => list?.status === 'PROCESSING');
+        state.selectedList = state?.completedLists[0]
       })
       .addCase(fetchLists.rejected, (state, action) => {
         state.loading = false;
@@ -192,7 +191,6 @@ const listSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchListById.fulfilled, (state, action) => {
-        // debugger
         state.loading = false;
         state.selectedList = action.payload;
       })

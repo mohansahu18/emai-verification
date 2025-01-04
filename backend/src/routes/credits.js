@@ -1,5 +1,5 @@
 const express = require('express');
-const creditController = require('../controllers/credit/CreditController');
+const creditController = require('../controllers/backend/CreditController');
 const router = express.Router();
 
 // Routes for getting credit balance

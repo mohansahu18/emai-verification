@@ -21,10 +21,7 @@ export function DashboardTableRow({
   selected,
   dashboardTableIndex,
   onOpenPopover,
-  onViewReport,
   onStartVerification,
-  isProcessing,
-  isCompleted,
 }) {
   const csvfilesname = [{ name: row.name, numberOfEmails: row.numberOfEmails }];
   const timezone = '(UTC+05:30) Asia/Kolkata';
@@ -37,20 +34,12 @@ export function DashboardTableRow({
     navigate('/app/reports');
     navigate('/app/reports');
   };
-  const handelNavigate = () => {
-    navigate('/app/reports');
-  };
 
   const dispatch = useDispatch();
 
   const handleStartVerification = () => {
     onStartVerification(); // Update local state
     dispatch(startVerification()); // Start verification process
-
-    // Simulate verification completion (remove in production)
-    // setTimeout(() => {
-    //   dispatch(finishVerification());
-    // }, 3000);
   };
   const handleDownload = () => {
     dispatch(downloadFile(row.jobId));
@@ -93,7 +82,6 @@ export function DashboardTableRow({
         </Stack>
         <Stack spacing={2} direction="row" alignItems="center">
           <Tooltip
-            // title={csvfilesname[dashboardTableIndex % csvfilesname.length]}
             title={
               <>
                 List Name: {currentFile.name} ({currentFile.numberOfEmails})
@@ -109,14 +97,13 @@ export function DashboardTableRow({
               fontSize={14}
               sx={{
                 mt: '4px',
-                // color: 'text.disabled',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
                 whiteSpace: 'nowrap',
                 maxWidth: '300px',
               }}
             >
-              {currentFile.name} ({currentFile.numberOfEmails}){/* {commonIcon} */}
+              {currentFile.name} ({currentFile.numberOfEmails})
             </Typography>
           </Tooltip>
         </Stack>

@@ -66,20 +66,11 @@ export const fetcher = async (args) => {
 // ----------------------------------------------------------------------
 
 export const endpoints = {
-  chat: '/api/chat',
-  kanban: '/api/kanban',
-  calendar: '/api/calendar',
   auth: {
     me: '/auth/verify-session',
     signIn: '/auth/signin',
     signUp: '/auth/signup',
     logout: '/auth/logout',
-  },
-  mail: {
-    verify: '/verify',
-    list: '/api/mail/list',
-    details: '/api/mail/details',
-    labels: '/api/mail/labels',
   },
   list: {
     verifySingle: "lists/validate-single",
@@ -91,39 +82,13 @@ export const endpoints = {
     chart: "/lists/stats",
     download: "/lists/download"
   },
-  post: {
-    details: '/api/post/details',
-    latest: '/api/post/latest',
-    search: '/api/post/search',
-  },
-  get: {
-    list: '/lists/single',
-    lists: '/lists',
-    chart: '/lists/chart',
-    verify: '/verify',
-    bulk: '/verify/bulk',
-    status: '/verify/status',
-    download: '/verify/download',
-    credits: '/users/credit',
-    timeZone: '/users/time-zone',
-    details: '/api/get/details',
-    search: '/api/get/search',
-  },
-  delete: {
-    list: '/lists',
-  },
-  product: {
-    list: '/api/product/list',
-    details: '/api/product/details',
-    search: '/api/product/search',
-  },
   credit: {
     getBalance: "credits/balance",
     getHistory: "credits/history"
   },
   timeZone: {
-    get: "/time-zone/country",
-    save: "/time-zone/save"
+    get: "/time-zone/",
+    save: "/time-zone/"
   }
 }
 

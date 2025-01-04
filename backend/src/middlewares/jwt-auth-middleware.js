@@ -2,10 +2,10 @@
  * JWT Authentication Middleware
  */
 
-const Response = require("../utils/response.js");
+const Response = require("../utils/response-util.js");
 const ActivityLog = require("../models/ActivityLog");
 const passport = require("passport");
-const Logs = require("../utils/logs.js");
+const Logs = require("../utils/logs-util.js");
 
 module.exports = async (req, res, next) => {
   passport.authenticate("jwt", { session: false }, async (err, user, info) => {
@@ -27,7 +27,7 @@ module.exports = async (req, res, next) => {
           delete eventData.password;
         }
 
-        const newActivityLog = new ActivityLog({
+        const newActivityLogs = new ActivityLog({
           user_id: user.id,
           module_name:
             req.routeOptions && req.routeOptions.module_name

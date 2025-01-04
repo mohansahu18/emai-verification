@@ -1,12 +1,11 @@
-const Logs = require('../../utils/logs.js');
-const Response = require('../../utils/response.js');
+const Logs = require('../../utils/logs-util.js');
+const Response = require('../../utils/response-util.js');
 const { verifySingleEmail, uploadFile, getBulkStatus, startBulkEmailVerification, removeBulkEmailList, calculateStats, downloadBulkEmailList } = require('../../services/bouncify-service.js');
 const EmailList = require('../../models/EmailList.js');
 const FormData = require('form-data');
-const BouncifyStatus = require('../../utils/bouncifyStatus.js');
 const { body, validationResult } = require('express-validator');
 const CreditService = require('../../services/credit-service.js');
-const logs = require('../../utils/logs.js');
+const BouncifyStatus = require('../../utils/bouncify-status-util.js');
 const axios = require('axios');
 require('dotenv').config();
 
@@ -81,7 +80,7 @@ module.exports = {
     */
     getListById: async (req, res) => {
         try {
-            const file = await EmailList.findById(req.params.fileId);
+            const file = await EmailList.findById(req.params.listId);
             if (!file) {
                 return res.status(404).json(Response.error("File Not Found"));
             }

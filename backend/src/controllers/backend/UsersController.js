@@ -1,7 +1,7 @@
 const User = require("../../models/User");
-const Logs = require("../../utils/logs.js");
-const Response = require("../../utils/response.js");
-const Helper = require("../../utils/helper.js");
+const Logs = require("../../utils/logs-util.js");
+const Response = require("../../utils/response-util.js");
+const Helper = require("../../utils/helper-util.js");
 const { validationResult, param, body } = require("express-validator");
 const Credits = require("../../models/Credit");
 const Credit = require("../../models/Credit");
@@ -248,134 +248,6 @@ module.exports = {
       res
         .status(500)
         .json(Response.error("There is some error while updating time zone"));
-    }
-  },
-  creditHistory: async (req, res) => {
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 10;
-    const search = req.query.search || "";
-    const type = req.query.type || "all";
-    const skip = (page - 1) * limit;
-    let totalCredits = 0;
-    let credits;
-    try {
-      switch (type) {
-        case "added":
-          totalCredits = await Credit.countDocuments({
-            userId: req.user.id,
-            type: "ADDED",
-            ...(search && { source: { $regex: search, $options: "i" } }),
-          });
-          credits = await Credit.find(
-            {
-              userId: req.user.id,
-              type: "ADDED",
-              ...(search && { source: { $regex: search, $options: "i" } }),
-            },
-            { updatedAt: 0, userId: 0 }
-          )
-            .sort({ createdAt: -1 })
-            .skip(skip)
-            .limit(limit);
-          break;
-        case "email":
-          totalCredits = await Credit.countDocuments({
-            $and: [
-              { userId: req.user.id },
-              { type: "USED" },
-              { source: { $not: { $regex: ".csv$", $options: "i" } } },
-              ...(search
-                ? [{ source: { $regex: search, $options: "i" } }]
-                : []),
-            ],
-          });
-          credits = await Credit.find(
-            {
-              $and: [
-                { userId: req.user.id },
-                { type: "USED" },
-                { source: { $not: { $regex: ".csv$", $options: "i" } } },
-                ...(search
-                  ? [{ source: { $regex: search, $options: "i" } }]
-                  : []),
-              ],
-            },
-            { updatedAt: 0, userId: 0 }
-          )
-            .sort({ createdAt: -1 })
-            .skip(skip)
-            .limit(limit);
-          break;
-        case "list":
-          totalCredits = await Credit.countDocuments({
-            $and: [
-              { userId: req.user.id },
-              { type: "USED" },
-              { source: { $regex: ".csv$", $options: "i" } },
-              ...(search
-                ? [{ source: { $regex: search, $options: "i" } }]
-                : []),
-            ],
-          });
-          credits = await Credit.find(
-            {
-              $and: [
-                { userId: req.user.id },
-                { type: "USED" },
-                { source: { $regex: ".csv$", $options: "i" } },
-                ...(search
-                  ? [{ source: { $regex: search, $options: "i" } }]
-                  : []),
-              ],
-            },
-            { updatedAt: 0, userId: 0 }
-          )
-            .sort({ createdAt: -1 })
-            .skip(skip)
-            .limit(limit);
-          break;
-        default:
-          totalCredits = await Credit.countDocuments({
-            userId: req.user.id,
-          });
-          credits = await Credit.find(
-            {
-              userId: req.user.id,
-              ...(search && { source: { $regex: search, $options: "i" } }),
-            },
-            { updatedAt: 0, userId: 0 }
-          )
-            .sort({ createdAt: -1 })
-            .skip(skip)
-            .limit(limit);
-      }
-
-      if (credits) {
-        res.status(200).send(
-          Response.success("Credit history successfully fetched", {
-            data: credits,
-            totalCredits,
-            page,
-            catchreditsPerPage: limit,
-          })
-        );
-      } else {
-        res.status(200).send(
-          Response.success("No credit history found", {
-            data: [],
-            totalCredits: 0,
-            page,
-            creditsPerPage: limit,
-          })
-        );
-      }
-    } catch (error) {
-      Logs.error(error);
-      res
-        .status(400)
-        .send(
-          Response.error("There is some error while getting credit history", {})
-        );
     }
   },
 };

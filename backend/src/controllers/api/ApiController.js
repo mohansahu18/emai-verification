@@ -1,4 +1,4 @@
-const Response = require("../../utils/response.js");
+const Response = require("../../utils/response-util.js");
 
 module.exports = {
   /**

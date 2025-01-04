@@ -112,17 +112,18 @@ export function DashboardTable() {
   const [totalRows, setTotalRows] = useState(0);
   const [searchValue, setSearchValue] = useState('');
   const selectedTimeZone = useSelector((state) => state.timeZone.selectedTimeZone);
+  console.log(listData);
 
   const dispatch = useDispatch();
   const [tableData, setTableData] = useState(
-    listData.map((item, index) => ({
+    listData?.listData?.map((item, index) => ({
       ...item,
       id: index,
     }))
   );
   useEffect(() => {
-    if (listData) {
-      setTableData(transformData(listData, selectedTimeZone));
+    if (listData?.listData) {
+      setTableData(transformData(listData?.listData, selectedTimeZone));
     }
   }, [listData, selectedTimeZone]);
   const handleStartVerification = (row) => {
@@ -152,7 +153,7 @@ export function DashboardTable() {
     filters.state.status !== 'all' ||
     (!!filters.state.startDate && !!filters.state.endDate);
 
-  const notFound = (!dataFiltered.length && canReset) || !dataFiltered.length;
+  const notFound = (!dataFiltered?.length && canReset) || !dataFiltered?.length;
 
   const changeSelect = (value) => {
     setSelected(value);
@@ -161,7 +162,6 @@ export function DashboardTable() {
 
   const handleFilterStatus = useCallback(
     (event, newValue) => {
-      // debugger;
       table.onResetPage();
       filters.setState({ status: newValue });
       dispatch(
@@ -179,7 +179,6 @@ export function DashboardTable() {
   const isStartVerification = useSelector((state) => state.fileUpload.isStartVerification);
   const isVerificationCompleted = useSelector((state) => state.fileUpload.isVerificationCompleted);
   const [processingRowId, setProcessingRowId] = useState(null);
-
   useEffect(() => {
     if (isVerificationCompleted && processingRowId !== null) {
       setTableData((prevData) =>
@@ -246,7 +245,6 @@ export function DashboardTable() {
   };
 
   useEffect(() => {
-    // debugger;
     if (selected === 'processing') {
       return;
     }
@@ -267,6 +265,9 @@ export function DashboardTable() {
       );
     }
   }, [dispatch, selected, page, rowsPerPage, searchValue]);
+  useEffect(() => {
+    dispatch(fetchLists({ status: selected, page: page + 1, limit: rowsPerPage }));
+  }, [dispatch, selected, page, rowsPerPage]);
   return (
     <Card>
       <CardHeader
@@ -318,8 +319,8 @@ export function DashboardTable() {
                 }
               >
                 {['completed', 'processing', 'unprocessed'].includes(tab.value)
-                  ? tableData.filter((user) => user.status === tab.value).length
-                  : tableData.length}
+                  ? tableData?.filter((user) => user.status === tab.value).length
+                  : tableData?.length}
               </Label>
             }
           />
@@ -345,20 +346,20 @@ export function DashboardTable() {
             order={table.order}
             orderBy={table.orderBy}
             headLabel={TABLE_HEAD}
-            rowCount={dataFiltered.length}
+            rowCount={dataFiltered?.length}
             numSelected={table.selected.length}
             onSort={table.onSort}
             onSelectAllRows={(checked) =>
               table.onSelectAllRows(
                 checked,
-                dataFiltered.map((row) => row.id)
+                dataFiltered?.map((row) => row.id)
               )
             }
           />
 
           <TableBody>
             {dataFiltered
-              .slice(
+              ?.slice(
                 table.page * table.rowsPerPage,
                 table.page * table.rowsPerPage + table.rowsPerPage
               )
@@ -378,10 +379,10 @@ export function DashboardTable() {
 
             <TableEmptyRows
               height={table.dense ? 56 : 56 + 20}
-              emptyRows={emptyRows(table.page, table.rowsPerPage, dataFiltered.length)}
+              emptyRows={emptyRows(table.page, table.rowsPerPage, dataFiltered?.length)}
             />
 
-            {tableData.length === 0 ? (
+            {tableData?.length === 0 ? (
               <TableNoData
                 title="Not Data Found"
                 description="No data found in the table"
@@ -457,7 +458,7 @@ export function DashboardTable() {
       </Snackbar>
       <TablePaginationCustom
         page={page}
-        count={dataFiltered.length}
+        count={dataFiltered?.length}
         rowsPerPage={rowsPerPage}
         onPageChange={(e, newPage) => setPage(newPage)}
         onChangeDense={table.onChangeDense}
@@ -470,18 +471,18 @@ export function DashboardTable() {
 function applyFilter({ inputData, comparator, filters, dateError }) {
   const { status, name, startDate, endDate } = filters;
 
-  const stabilizedThis = inputData.map((el, index) => [el, index]);
+  const stabilizedThis = inputData?.map((el, index) => [el, index]);
 
-  stabilizedThis.sort((a, b) => {
+  stabilizedThis?.sort((a, b) => {
     const order = comparator(a[0], b[0]);
     if (order !== 0) return order;
     return a[1] - b[1];
   });
 
-  inputData = stabilizedThis.map((el) => el[0]);
+  inputData = stabilizedThis?.map((el) => el[0]);
 
   if (name) {
-    inputData = inputData.filter(
+    inputData = inputData?.filter(
       (order) =>
         order.uploadedList?.name?.toLowerCase()?.indexOf(name?.toLowerCase()) !== -1 ||
         order.uploadedList?.email?.toLowerCase()?.indexOf(name?.toLowerCase()) !== -1
@@ -489,12 +490,12 @@ function applyFilter({ inputData, comparator, filters, dateError }) {
   }
 
   if (status !== 'all') {
-    inputData = inputData.filter((order) => order.status === status);
+    inputData = inputData?.filter((order) => order.status === status);
   }
 
   if (!dateError) {
     if (startDate && endDate) {
-      inputData = inputData.filter((order) => fIsBetween(order.createdAt, startDate, endDate));
+      inputData = inputData?.filter((order) => fIsBetween(order.createdAt, startDate, endDate));
     }
   }
 

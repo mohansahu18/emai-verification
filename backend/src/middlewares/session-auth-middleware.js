@@ -2,7 +2,7 @@
  * Session Authentication Middleware
  */
 
-const Response = require("../utils/response.js");
+const Response = require("../utils/response-util.js");
 const ActivityLog = require("../models/ActivityLog");
 
 module.exports = async (req, res, next) => {
