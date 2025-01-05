@@ -25,7 +25,7 @@ import { CreditTableRow } from './credit-table-row';
 import { CreditTableToolbar } from './credit-table-toolbar';
 import { CreditTableFiltersResult } from './credit-table-filters-result';
 
-function applyFilter({ inputData, comparator, filters, dateError }) {
+function applyFilter({ inputData, filters, dateError }) {
   const { status, name, startDate, endDate } = filters;
 
   let filteredData = inputData;
@@ -114,7 +114,7 @@ function transformData(data, selectedTimeZone) {
 
 export function CreditTable() {
   const dispatch = useDispatch();
-  const { history, loading } = useSelector((store) => store.credits);
+  const { history } = useSelector((store) => store.credits);
   const table = useTable({ defaultOrderBy: 'orderNumber' });
   const [currentFilter, setCurrentFilter] = useState('all');
   const [page, setPage] = useState(0);
@@ -173,17 +173,7 @@ export function CreditTable() {
       })
     );
   }, [dispatch, page, rowsPerPage, currentFilter]);
-  // Show loading state
 
-  // if (loading && tableData.length === 0) {
-  //   return (
-  //     <Card>
-  //       <Box sx={{ p: 3, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-  //         <CircularProgress />
-  //       </Box>
-  //     </Card>
-  //   );
-  // }
   const handleSearch = (value) => {
     // Clear any existing timeout
     if (searchTimeoutRef.current) {
@@ -197,9 +187,6 @@ export function CreditTable() {
     }, 2000); // 2 seconds delay
   };
   const handleFilterApplied = (filter) => {
-    // setCurrentFilter(filter)
-    // Added Verified Email Verified List all
-
     switch (filter) {
       case 'Added':
         setCurrentFilter('added');
@@ -261,7 +248,6 @@ export function CreditTable() {
               order={table.order}
               orderBy={table.orderBy}
               headLabel={TABLE_HEAD}
-              // rowCount={dataFiltered.length}
               numSelected={table.selected.length}
               onSort={table.onSort}
               onSelectAllRows={(checked) =>
@@ -271,36 +257,6 @@ export function CreditTable() {
                 )
               }
             />
-            {/* 
-            <TableBody>
-              {tableData &&
-                tableData.map((row, index) => (
-                  <CreditTableRow
-                    key={index}
-                    row={row}
-                    selected={table.selected.includes(row.id)}
-                  />
-                ))}
-
-              <TableEmptyRows
-                height={table.dense ? 56 : 56 + 20}
-                emptyRows={emptyRows(table?.page, table?.rowsPerPage, history.data?.length)}
-              />
-
-              {tableData?.length === 0 ? (
-                <TableNoData
-                  title="Not Data Found"
-                  description="No data found in the table"
-                  notFound={notFound}
-                />
-              ) : (
-                <TableNoData
-                  title="Not Search Found"
-                  description={`No search found with keyword "${filters.state.name}"`}
-                  notFound={notFound}
-                />
-              )}
-            </TableBody> */}
             <TableBody>
               {dataFiltered.length > 0 ? (
                 <>

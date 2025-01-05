@@ -2,14 +2,9 @@ import { useDispatch } from 'react-redux';
 
 import { Box, Alert, Typography } from '@mui/material';
 
-import { startVerification } from 'src/redux/slice/uploadSlice';
-
 export default function ChartAlert() {
   const dispatch = useDispatch();
 
-  const handleStartVerification = () => {
-    dispatch(startVerification()); // Dispatch action to reset isUploaded and start verification
-  };
   return (
     <Box
       sx={{
@@ -27,9 +22,6 @@ export default function ChartAlert() {
           Uploaded Successfully
         </Typography>
       </Alert>
-      {/* <Button color="primary" sx={{ mt: 2 }} onClick={handleStartVerification}>
-        Start Verification
-      </Button> */}
     </Box>
   );
 }

@@ -151,11 +151,6 @@ export function DashboardTable() {
 
   const notFound = (!dataFiltered?.length && canReset) || !dataFiltered?.length;
 
-  const changeSelect = (value) => {
-    setSelected(value);
-    setPage(0);
-  };
-
   const handleFilterStatus = useCallback(
     (event, newValue) => {
       table.onResetPage();
@@ -202,9 +197,7 @@ export function DashboardTable() {
   const theme = useTheme();
 
   const handleConfirmDelete = () => {
-    // Implement delete logic here
     confirmDelete.onTrue();
-    // handleClosePopover();
   };
 
   const handleDelete = async () => {
@@ -224,11 +217,6 @@ export function DashboardTable() {
         severity: 'danger',
       });
     }
-  };
-
-  const changePerPage = (e) => {
-    setRowsPerPage(e.target.value);
-    setPage(0);
   };
 
   useEffect(() => {

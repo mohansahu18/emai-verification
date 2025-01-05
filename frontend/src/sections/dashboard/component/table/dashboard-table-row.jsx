@@ -85,7 +85,6 @@ export function DashboardTableRow({
             title={
               <>
                 List Name: {currentFile.name} ({currentFile.numberOfEmails})
-                {/* Number of Emails: {currentFile.numberOfEmails} */}
               </>
             }
             arrow

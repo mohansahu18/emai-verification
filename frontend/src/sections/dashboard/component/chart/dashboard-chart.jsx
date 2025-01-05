@@ -1,4 +1,3 @@
-/* eslint-disable consistent-return */
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -49,19 +48,11 @@ export function DashboardChart({ title, subheader, showAlert, chart, handleAlert
   );
   const dispatch = useDispatch();
 
-  const handleOpen = (mode) => {
-    setDialog({ open: true, mode });
-  };
-
   const handleClose = () => {
     setDialog({ open: false, mode: '' });
   };
 
-  const [selectedValue, setSelectedValue] = useState(downloadActions[1]);
-
   const showChart = true;
-  // (!isUploading && !isUploaded && !isStartVerification && !isVerificationCompleted) ||
-  // isVerificationCompleted;
 
   const showProgressLinear = isUploading || (isStartVerification && !isVerificationCompleted);
 
