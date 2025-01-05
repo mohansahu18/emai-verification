@@ -265,9 +265,6 @@ export function DashboardTable() {
       );
     }
   }, [dispatch, selected, page, rowsPerPage, searchValue]);
-  useEffect(() => {
-    dispatch(fetchLists({ status: selected, page: page + 1, limit: rowsPerPage }));
-  }, [dispatch, selected, page, rowsPerPage]);
   return (
     <Card>
       <CardHeader

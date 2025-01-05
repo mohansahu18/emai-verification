@@ -145,7 +145,7 @@ const listSlice = createSlice({
       state.selectedListIndex = action.payload;
     },
     setList: (state, action) => {
-      state.data = action.payload;
+      state.data.listData = action.payload;
     },
     setCompletedList: (state, action) => {
       state.completedLists = action.payload;

@@ -111,7 +111,7 @@ const FileUpload = forwardRef(
             })
             .then((res) => {
               if (res.status === 201) {
-                const newLists = [res.data.data, ...lists];
+                const newLists = [res.data.data, ...lists.listData];
 
                 dispatch(setUploadedListId(res.data.data._id));
                 dispatch(setList(newLists));
@@ -123,25 +123,6 @@ const FileUpload = forwardRef(
           setErrorMessage('Something went wrong');
           dispatch(resetUpload());
         }
-        // setErrorMessage(null);
-        // setLocalSelectedFile(file);
-        // dispatch(startUpload());
-        // const progress = 10;
-        // dispatch(updateProgress(progress));
-        // const uploadSimulation = setInterval(() => {
-        // progress += 5;
-        // dispatch(updateProgress(progress));
-        //   if (progress >= 100) {
-        //     clearInterval(uploadSimulation);
-        //     dispatch(finishUpload());
-        //   }
-        // }, 500);
-
-        // setTimeout(() => {
-        //   dispatch(finishUpload());
-        // }, 1000);
-
-        // onFileUpload(file);
       }
       event.target.value = '';
     };

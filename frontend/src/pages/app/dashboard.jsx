@@ -20,7 +20,6 @@ import VerifySingleEmail from 'src/sections/dashboard/component/verify-single-em
 import axios, { endpoints } from 'src/utils/axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { deductCredit, fetchCreditBalance } from 'src/redux/slice/creditSlice';
-import { fetchLists } from 'src/redux/slice/listSlice';
 
 // ----------------------------------------------------------------------
 
@@ -116,10 +115,6 @@ export default function Page() {
       block: 'center',
     });
   };
-  useEffect(() => {
-    dispatch(fetchLists());
-    // eslint-disable-next-line
-  }, [dispatch, processingLists.length]);
 
   return (
     <>
@@ -323,22 +318,6 @@ export default function Page() {
           {alertState.message}
         </Alert>
       </Snackbar>
-      {/* {alertState.open && (
-        <div
-          style={{
-            position: 'fixed',
-            top: '80px',
-            right: '10px',
-            zIndex: 1000,
-            width: '700px',
-          }}
-        >
-          <Alert severity={alertState.color} onClose={handleAlertClose}>
-            <AlertTitle sx={{ textTransform: 'capitalize' }}>{alertState.title}</AlertTitle>
-            {alertState.message} — <strong>{alertState.status}</strong>
-          </Alert>
-        </div>
-      )} */}
     </>
   );
 }
