@@ -105,14 +105,11 @@ function transformData(data, selectedTimeZone) {
 export function DashboardTable() {
   const table = useTable({ defaultOrderBy: 'orderNumber' });
   const listData = useSelector((state) => state.list.data);
-  const processingLists = useSelector((state) => state.list.processingLists);
   const [selected, setSelected] = useState('all');
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [totalRows, setTotalRows] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
   const [searchValue, setSearchValue] = useState('');
   const selectedTimeZone = useSelector((state) => state.timeZone.selectedTimeZone);
-  console.log(listData);
 
   const dispatch = useDispatch();
   const [tableData, setTableData] = useState(
@@ -145,7 +142,6 @@ export function DashboardTable() {
     comparator: getComparator(table.order, table.orderBy),
     filters: filters.state,
   });
-
   const dataInPage = rowInPage(dataFiltered, table.page, table.rowsPerPage);
 
   const canReset =
@@ -164,17 +160,8 @@ export function DashboardTable() {
     (event, newValue) => {
       table.onResetPage();
       filters.setState({ status: newValue });
-      dispatch(
-        fetchLists({
-          search: searchValue,
-          status: newValue,
-          page: 1, // Reset to the first page
-          rowsPerPage: filters.state.rowsPerPage,
-        })
-      );
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [filters, table, dispatch]
+    [filters, table]
   );
   const isStartVerification = useSelector((state) => state.fileUpload.isStartVerification);
   const isVerificationCompleted = useSelector((state) => state.fileUpload.isVerificationCompleted);
@@ -248,10 +235,14 @@ export function DashboardTable() {
     if (selected === 'processing') {
       return;
     }
-
     if (selected === 'all') {
       dispatch(
-        fetchLists({ status: selected, page: page + 1, limit: rowsPerPage, search: searchValue })
+        fetchLists({
+          status: filters.state.status,
+          page: page + 1,
+          limit: rowsPerPage,
+          search: searchValue,
+        })
       );
     } else {
       dispatch(
@@ -259,12 +250,12 @@ export function DashboardTable() {
           type: selected,
           page: page + 1,
           limit: rowsPerPage,
-          status: selected === 'completed' ? 'COMPLETED' : 'PENDING',
+          status: filters.state.status,
           search: searchValue,
         })
       );
     }
-  }, [dispatch, selected, page, rowsPerPage, searchValue]);
+  }, [dispatch, selected, page, rowsPerPage, searchValue, filters.state.status]);
   return (
     <Card>
       <CardHeader
@@ -283,7 +274,6 @@ export function DashboardTable() {
         sx={{ pb: 3 }}
       />
       <Divider />
-
       <Tabs
         value={filters.state.status}
         onChange={handleFilterStatus}
@@ -323,18 +313,19 @@ export function DashboardTable() {
           />
         ))}
       </Tabs>
-
-      <DashboardTableToolbar filters={filters} onResetPage={table.onResetPage} />
-
+      <DashboardTableToolbar
+        filters={filters}
+        onResetPage={table.onResetPage}
+        setSearchValue={setSearchValue}
+      />
       {canReset && (
         <DashboardTableFiltersResult
           filters={filters}
-          totalResults={dataFiltered.length}
+          totalResults={listData?.totalEmailLists}
           onResetPage={table.onResetPage}
           sx={{ p: 2.5, pt: 0 }}
         />
       )}
-
       <Box sx={{ position: 'relative' }}>
         {/* <Scrollbar sx={{ minHeight: 444 }}> */}
         <Table size={table.dense ? 'small' : 'medium'} sx={{}}>
@@ -455,11 +446,12 @@ export function DashboardTable() {
       </Snackbar>
       <TablePaginationCustom
         page={page}
-        count={dataFiltered?.length}
-        rowsPerPage={rowsPerPage}
+        count={listData?.totalEmailLists}
+        dense={table.dense}
+        rowsPerPage={table.rowsPerPage}
         onPageChange={(e, newPage) => setPage(newPage)}
         onChangeDense={table.onChangeDense}
-        onRowsPerPageChange={(e) => changePerPage(e)}
+        onRowsPerPageChange={table.onRowsPerPageChange}
       />
     </Card>
   );

@@ -10,7 +10,6 @@ import { Label } from 'src/components/label';
 
 export function CreditTableRow({ row, selected }) {
   const timezone = ', (UTC+05:30) Asia/Kolkata';
-  console.log(row);
 
   return (
     <TableRow hover>

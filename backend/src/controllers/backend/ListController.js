@@ -19,9 +19,9 @@ module.exports = {
     getAllList: async (req, res) => {
         const userId = req?.user?.id;
         const page = parseInt(req.query.page) || 1;
-        const limit = parseInt(req.query.limit) || 10;
+        const limit = parseInt(req.query.limit) || 5;
         const search = req.query.search || "";
-        // const status = req.query.status || "";
+        const status = req.query.status || "";
         const skip = (page - 1) * limit;
 
         try {
@@ -30,6 +30,12 @@ module.exports = {
             // Add search filter for listName (case-insensitive)
             if (search) {
                 filterCriteria.listName = { $regex: search, $options: "i" };
+            }
+
+
+            // Add status filter if it's not "all" or empty
+            if (status && status.toLowerCase() !== "all") {
+                filterCriteria.status = status.toUpperCase(); // Ensure status is case-consistent
             }
 
             const emailLists = await EmailList.find(filterCriteria)

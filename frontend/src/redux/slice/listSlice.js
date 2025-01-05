@@ -124,7 +124,12 @@ const listSlice = createSlice({
   name: 'list',
   initialState: {
     selectedListIndex: 0,
-    data: [],
+    data: {
+      listData: [],
+      totalEmailLists: 0,
+      page: 1,
+      listPerPage: 10
+    },
     completedLists: [],
     unprocessedLists: [],
     processingLists: [],
@@ -219,10 +224,10 @@ const listSlice = createSlice({
       })
       .addCase(pollJobStatus.fulfilled, (state, action) => {
         state.loading = false;
-        const updatedList = state.data.map((list) =>
+        const updatedList = state.data.listData.map((list) =>
           list.jobId === action.payload.data.jobId ? { ...list, status: action?.payload?.data?.status } : list
         );
-        state.data = updatedList;
+        state.data.listData = updatedList;
         state.pollingJob = null; // Reset current polling job
       })
       .addCase(pollJobStatus.rejected, (state, action) => {

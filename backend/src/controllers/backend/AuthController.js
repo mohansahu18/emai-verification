@@ -240,7 +240,6 @@ module.exports = {
   verifySession: async function (req, res) {
     try {
       if (req.session && req.user) {
-        // console.log("req.user", req.user);
         const user = await User.findOne({ userId: req.user.id });
 
         res.status(200).send(
@@ -249,13 +248,11 @@ module.exports = {
               first_name: req.user.first_name,
               last_name: req.user.last_name,
               email: req.user.email,
-              // timeZone: req.user.time_zone,
-              timeZone: user?.timezone || "IST",
+              timeZone: user?.timezone,
             },
           })
         );
 
-        // console.log("req.user", req.user);
       } else {
         res
           .status(401)

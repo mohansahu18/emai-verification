@@ -116,7 +116,6 @@ const FileUpload = forwardRef(
                 dispatch(setUploadedListId(res.data.data._id));
                 dispatch(setList(newLists));
                 dispatch(finishUpload());
-                // dispatch(fetchLists());
               }
             });
         } catch (e) {
