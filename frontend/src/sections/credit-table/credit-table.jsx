@@ -1,5 +1,5 @@
 import { useTheme } from '@emotion/react';
-import { useRef, useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Table from '@mui/material/Table';
@@ -120,7 +120,6 @@ export function CreditTable() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [searchValue, setSearchValue] = useState('');
-  const searchTimeoutRef = useRef(null);
   const selectedTimeZone = useSelector((state) => state.timeZone.selectedTimeZone);
 
   const theme = useTheme();
@@ -163,28 +162,20 @@ export function CreditTable() {
     setRowsPerPage(num);
     setPage(0);
   };
+
   useEffect(() => {
     dispatch(
       fetchCreditsHistory({
         page: page + 1,
         limit: rowsPerPage,
-        // search: searchValue,
-        type: currentFilter,
+        search: searchValue,
+        status: currentFilter,
       })
     );
-  }, [dispatch, page, rowsPerPage, currentFilter]);
+  }, [dispatch, page, rowsPerPage, currentFilter, searchValue]);
 
   const handleSearch = (value) => {
     // Clear any existing timeout
-    if (searchTimeoutRef.current) {
-      clearTimeout(searchTimeoutRef.current);
-    }
-
-    // Set new timeout
-    searchTimeoutRef.current = setTimeout(() => {
-      setSearchValue(value);
-      // Add your search logic here
-    }, 2000); // 2 seconds delay
   };
   const handleFilterApplied = (filter) => {
     switch (filter) {
@@ -226,8 +217,10 @@ export function CreditTable() {
 
       <CreditTableToolbar
         filters={filters}
+        setCurrentFilter={setCurrentFilter}
         onResetPage={table.onResetPage}
-        onSearchChange={handleSearch}
+        setSearchValue={setSearchValue}
+        searchValue={searchValue}
         onFilterChange={handleFilterApplied}
         totalCredits={history.totalCredits ? history.totalCredits : 0}
       />

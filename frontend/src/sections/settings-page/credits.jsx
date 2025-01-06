@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Box, useMediaQuery } from '@mui/material';
-import { fetchCreditBalance, fetchCreditsHistory } from 'src/redux/slice/creditSlice';
+import { fetchCreditBalance } from 'src/redux/slice/creditSlice';
 import StatsCards from 'src/components/stats-card/stats-card';
 
 import { CreditTable } from '../credit-table/credit-table';
@@ -17,9 +17,6 @@ export default function ThreePage() {
   const dispatch = useDispatch();
   const { totalCredits, usedCredits, remainingCredits } = useSelector((state) => state.credits);
 
-  useEffect(() => {
-    dispatch(fetchCreditsHistory({ limit: 5 }));
-  }, [dispatch]);
   useEffect(() => {
     if (!totalCredits) {
       dispatch(fetchCreditBalance());

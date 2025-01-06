@@ -18,10 +18,17 @@ import {
 } from '@mui/material';
 
 import { Iconify } from 'src/components/iconify';
-import { fetchCreditsHistory } from 'src/redux/slice/creditSlice';
 import { useDispatch } from 'react-redux';
 
-export function CreditTableToolbar({ filters, onResetPage, publish, onChangePublish }) {
+export function CreditTableToolbar({
+  filters,
+  onResetPage,
+  publish,
+  onChangePublish,
+  setCurrentFilter,
+  setSearchValue,
+  searchValue,
+}) {
   const theme = useTheme();
   const isBelow600px = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -33,19 +40,8 @@ export function CreditTableToolbar({ filters, onResetPage, publish, onChangePubl
   const handlePopoverClose = () => setAnchorEl(null);
   const dispatch = useDispatch();
   const handleFilterName = (event) => {
-    const searchValue = event.target.value; // Get the search input
     onResetPage(); // Reset the pagination to the first page
-    filters.setState({ name: searchValue }); // Update the search state
-    dispatch(
-      fetchCreditsHistory({
-        query: searchValue, // Pass the query to the Redux action
-        status: filters.state.status,
-        amount: filters.state.amount,
-        type: filters.state.type,
-        page: 1, // Reset to the first page
-        rowsPerPage: filters.state.rowsPerPage,
-      })
-    );
+    setSearchValue(event.target.value);
   };
 
   const [isFilterApplied, setFilterApplied] = useState(false); // Local filter state
@@ -66,6 +62,7 @@ export function CreditTableToolbar({ filters, onResetPage, publish, onChangePubl
   const resetFilters = () => {
     setselectedstatus(null);
     setFilterApplied(false);
+    setCurrentFilter('all');
   };
 
   const handleFilterButtonClick = (e) => {
@@ -81,6 +78,7 @@ export function CreditTableToolbar({ filters, onResetPage, publish, onChangePubl
   const handleApplyFilter = () => {
     if (hasAnyFilterSelected) {
       setFilterApplied(true);
+      setCurrentFilter(selectedstatus);
       handleFilterClose();
     }
   };
@@ -110,7 +108,7 @@ export function CreditTableToolbar({ filters, onResetPage, publish, onChangePubl
         <Box sx={{ width: '100%' }}>
           <TextField
             fullWidth
-            value={filters?.state?.name}
+            value={searchValue}
             onChange={handleFilterName}
             placeholder="Search by messages..."
             InputProps={{
