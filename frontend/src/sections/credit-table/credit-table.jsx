@@ -6,7 +6,7 @@ import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import { Divider, Tooltip, CardHeader, Typography } from '@mui/material';
 import { useSetState } from 'src/hooks/use-set-state';
-import { fIsBetween } from 'src/utils/format-time';
+import { fIsBetween } from 'src/utils/format-time-util';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchCreditsHistory } from 'src/redux/slice/creditSlice';
 import { Scrollbar } from 'src/components/scrollbar';

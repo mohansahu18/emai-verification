@@ -1,22 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axiosInstance, { endpoints } from 'src/utils/axios';
+import axiosInstance, { endpoints } from 'src/utils/axios-util';
+import formatTimezoneDisplay from 'src/utils/format-timezone-display-util';
 
-// Helper function to format timezone display
-const formatTimezoneDisplay = (tz) => {
-    // Convert minutes to hours (API sends GMT in minutes)
-    // const minutes = parseInt(tz.value.replace(/[^-\d]/g, ''));
-    const minutes = parseInt(tz.value.replace(/[^-\d]/g, ''), 10);
-    const hours = Math.floor(Math.abs(minutes) / 60);
-    const mins = Math.abs(minutes) % 60;
-    const sign = minutes >= 0 ? '+' : '-';
 
-    // Format as (GMT±HH:MM) Location
-    const gmtPart = `(GMT${sign}${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')})`;
-    // Convert "Region/City" to just "City" and replace underscores with spaces
-    const location = tz.key.split('/').pop().replace(/_/g, ' ');
-
-    return `${gmtPart} ${location}`;
-};
 
 // Create async thunk for fetching timezones
 export const fetchTimeZones = createAsyncThunk(
@@ -74,7 +60,7 @@ const timeZoneSlice = createSlice({
             .addCase(fetchTimeZones.fulfilled, (state, action) => {
                 state.loading = false;
                 // Add display format to each timezone
-                state.timeZones = action.payload.map((tz, index) => ({
+                state.timeZones = action.payload.data.map((tz, index) => ({
                     ...tz,
                     key: `${tz.key}`,
                     display: formatTimezoneDisplay(tz)

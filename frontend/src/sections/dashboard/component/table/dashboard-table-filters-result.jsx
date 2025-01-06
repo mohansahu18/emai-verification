@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 
 import Chip from '@mui/material/Chip';
 
-import { fDateRangeShortLabel } from 'src/utils/format-time';
+import { fDateRangeShortLabel } from 'src/utils/format-time-util';
 
 import { chipProps, FiltersBlock, FiltersResult } from 'src/components/filters-result';
 

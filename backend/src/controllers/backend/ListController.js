@@ -425,6 +425,7 @@ module.exports = {
             const stats = await calculateStats(req.user.id);
             return res.status(200).json(Response.success("Stats fetched successfully", stats));
         } catch (error) {
+            Logs.error("Error in fetching stats: ", error);
             return res.status(500).json(Response.error("Error fetching stats"));
         }
     }

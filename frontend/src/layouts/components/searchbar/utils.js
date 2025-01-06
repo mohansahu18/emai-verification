@@ -1,4 +1,4 @@
-import { flattenArray } from 'src/utils/helper';
+import { flattenArray } from 'src/utils/helper-util';
 
 // ----------------------------------------------------------------------
 

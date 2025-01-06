@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import ListItemText from '@mui/material/ListItemText';
 
-import { fToNow } from 'src/utils/format-time';
+import { fToNow } from 'src/utils/format-time-util';
 
 import { varHover } from 'src/components/animate';
 import { Scrollbar } from 'src/components/scrollbar';

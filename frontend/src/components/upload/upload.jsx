@@ -3,7 +3,7 @@ import React, { useRef, useState, forwardRef, useImperativeHandle } from 'react'
 
 import { Box, IconButton, Typography } from '@mui/material';
 
-import axiosInstance, { endpoints } from 'src/utils/axios';
+import axiosInstance, { endpoints } from 'src/utils/axios-util';
 
 import { varAlpha } from 'src/theme/styles';
 import {

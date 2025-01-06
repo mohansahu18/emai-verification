@@ -17,7 +17,7 @@ import Upload from 'src/sections/dashboard/component/upload/upload-file';
 import { DashboardTable } from 'src/sections/dashboard/component/table/dashboard-table';
 import { DashboardChart } from 'src/sections/dashboard/component/chart/dashboard-chart';
 import VerifySingleEmail from 'src/sections/dashboard/component/verify-single-email/verify-single-email';
-import axios, { endpoints } from 'src/utils/axios';
+import axios, { endpoints } from 'src/utils/axios-util';
 import { useDispatch, useSelector } from 'react-redux';
 import { deductCredit, fetchCreditBalance } from 'src/redux/slice/creditSlice';
 

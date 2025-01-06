@@ -1,7 +1,7 @@
 // src/redux/slice/listNameSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-import axiosInstance, { endpoints } from 'src/utils/axios';
+import axiosInstance, { endpoints } from 'src/utils/axios-util';
 import { deductCredit } from './creditSlice';
 
 

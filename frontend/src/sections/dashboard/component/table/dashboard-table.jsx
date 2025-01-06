@@ -23,7 +23,7 @@ import {
 import { useBoolean } from 'src/hooks/use-boolean';
 import { useSetState } from 'src/hooks/use-set-state';
 
-import { fIsBetween } from 'src/utils/format-time';
+import { fIsBetween } from 'src/utils/format-time-util';
 
 import { varAlpha } from 'src/theme/styles';
 import { DASHBOARD_STATUS_OPTIONS } from 'src/_mock/_table/_dashboard';

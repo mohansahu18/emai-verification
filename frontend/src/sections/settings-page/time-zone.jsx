@@ -19,12 +19,9 @@ import {
   FormHelperText,
 } from '@mui/material';
 
-import { CONFIG } from 'src/config-global';
 import { Iconify } from 'src/components/iconify';
 import { useDispatch, useSelector } from 'react-redux';
 import { saveTimeZone, fetchTimeZones, setSelectedTimeZone } from 'src/redux/slice/timeZoneSlice';
-
-const metadata = { title: `Page three | Dashboard - ${CONFIG.site.name}` };
 
 export default function TimeZonePage() {
   const [searchTerm, setSearchTerm] = useState('');

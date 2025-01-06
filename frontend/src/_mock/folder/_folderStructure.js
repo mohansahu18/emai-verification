@@ -1,4 +1,4 @@
-import { folderItems } from 'src/utils/folderutilityfunction';
+import { folderItems } from 'src/utils/folder-util';
 
 import { LABELS } from './_folderLables';
 

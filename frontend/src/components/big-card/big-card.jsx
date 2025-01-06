@@ -34,9 +34,8 @@ export default function BigCard({
           <Box>
             <Box sx={{ mb: 1 }}>
               <Typography variant="h6">
-                <Tooltip arrow placement="top" title={tooltip}>
-                  {' '}
-                  {bigcardtitle}{' '}
+                <Tooltip arrow placement="top" title={<span>{tooltip}</span>}>
+                  <span>{bigcardtitle}</span>
                 </Tooltip>
               </Typography>
 

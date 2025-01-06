@@ -2,6 +2,7 @@ const Response = require('../../utils/response-util')
 const ct = require('countries-and-timezones');
 const User = require('../../models/User');
 const { getGmtOffset } = require('../../utils/timezone-util');
+const Logs = require('../../utils/logs-util.js');
 
 module.exports = {
     /**
@@ -10,19 +11,23 @@ module.exports = {
      * @param {*} res 
      */
     getTimezonesByCountry: (req, res) => {
-        const countries = ct.getAllCountries();
-        const formattedTimezones = [];
+        try {
+            const countries = ct.getAllCountries();
+            const formattedTimezones = [];
 
-        for (const countryCode in countries) {
-            const country = countries[countryCode];
+            for (const countryCode in countries) {
+                const country = countries[countryCode];
 
-            country.timezones.forEach((timezone) => {
-                const gmtOffset = getGmtOffset(timezone);
-                formattedTimezones.push({ key: timezone, value: gmtOffset });
-            });
+                country.timezones.forEach((timezone) => {
+                    const gmtOffset = getGmtOffset(timezone);
+                    formattedTimezones.push({ key: timezone, value: gmtOffset });
+                });
+            }
+            res.status(200).json(Response.success("Timezones fetched successfully", formattedTimezones));
+        } catch (error) {
+            Logs.error("Error in fetching timezones: ", error);
         }
 
-        res.json(formattedTimezones);
     },
 
     /**
@@ -54,6 +59,7 @@ module.exports = {
             // Save the timezone (use a database in production)
             return res.status(200).json(Response.success('Timezone saved successfully', { timezone, gmtOffset }));
         } catch (error) {
+            Logs.error("Error in saving timezone: ", error);
             return res.status(500).json(Response.error("Error while saving timezone", error));
         }
 

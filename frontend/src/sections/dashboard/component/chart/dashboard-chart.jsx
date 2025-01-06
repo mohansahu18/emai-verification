@@ -19,7 +19,7 @@ import {
   ListItemButton,
 } from '@mui/material';
 
-import { fNumber } from 'src/utils/format-number';
+import { fNumber } from 'src/utils/format-number-util';
 
 import { Iconify } from 'src/components/iconify';
 import { Chart, useChart, ChartLegends } from 'src/components/chart';

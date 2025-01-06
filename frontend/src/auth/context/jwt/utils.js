@@ -1,6 +1,6 @@
 import { paths } from 'src/routes/paths';
 
-import axios from 'src/utils/axios';
+import axios from 'src/utils/axios-util';
 
 import { STORAGE_KEY } from './constant';
 
