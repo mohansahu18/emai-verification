@@ -1,4 +1,4 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 
 import Stack from '@mui/material/Stack';
@@ -25,6 +25,7 @@ export function DashboardTableRow({
 }) {
   const csvfilesname = [{ name: row.name, numberOfEmails: row.numberOfEmails }];
   const timezone = '(UTC+05:30) Asia/Kolkata';
+  const { remainingCredits } = useSelector((state) => state.credits);
 
   // Get the current file details based on the index
   const currentFile = csvfilesname[dashboardTableIndex % csvfilesname.length];
@@ -38,8 +39,12 @@ export function DashboardTableRow({
   const dispatch = useDispatch();
 
   const handleStartVerification = () => {
-    onStartVerification(); // Update local state
-    dispatch(startVerification()); // Start verification process
+    if (remainingCredits >= row.numberOfEmails) {
+      onStartVerification(); // Update local state
+      dispatch(startVerification()); // Start verification process
+    } else {
+      console.log("You don't have enough credits to start verification.");
+    }
   };
   const handleDownload = () => {
     dispatch(downloadList({ jobId: row.jobId }));

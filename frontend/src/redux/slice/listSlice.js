@@ -117,13 +117,13 @@ export const pollJobStatus = createAsyncThunk(
       try {
         const response = await axiosInstance.get(endpoints.list.getStatus, { params: { jobId } });
         const { status } = response.data.data;
-        if (status === 'COMPLETED' || status === 'FAILED') {
-          resolve(response.data);
+        if (status === 'COMPLETED' || status === 'FAILED' || status === 'UNPROCESSED') {
           if (status === 'COMPLETED') {
             dispatch(deductCredit({
               amount: response?.data?.data?.totalEmails
             }))
           }
+          resolve(response.data);
         } else {
           setTimeout(() => poll(resolve, reject), 5000); // Poll again in 5 seconds
         }
