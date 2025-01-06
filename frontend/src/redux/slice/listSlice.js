@@ -33,8 +33,8 @@ export const fetchListById = createAsyncThunk('list/getList', async (listId) => 
   }
 })
 
-export const downloadFile = createAsyncThunk(
-  'list/downloadFile',
+export const downloadList = createAsyncThunk(
+  'list/downloadList',
   async (jobId, { rejectWithValue }) => {
     try {
       // Make a GET request to download the file
@@ -236,11 +236,11 @@ const listSlice = createSlice({
         state.pollingJob = null; // Reset current polling job
       })
       // download file 
-      .addCase(downloadFile.pending, (state) => {
+      .addCase(downloadList.pending, (state) => {
         state.downloadLoading = true;
         state.downloadError = null;
       })
-      .addCase(downloadFile.fulfilled, (state, action) => {
+      .addCase(downloadList.fulfilled, (state, action) => {
         // Handle successful file download, trigger the download in the browser
         state.downloadLoading = false;
         state.downloadedFile = action.payload;
@@ -253,7 +253,7 @@ const listSlice = createSlice({
         document.body.appendChild(link);
         link.click();
       })
-      .addCase(downloadFile.rejected, (state, action) => {
+      .addCase(downloadList.rejected, (state, action) => {
         state.downloadLoading = false;
         state.downloadError = action.payload;
       });

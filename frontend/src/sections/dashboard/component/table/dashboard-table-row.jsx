@@ -12,7 +12,7 @@ import { startVerification } from 'src/redux/slice/uploadSlice';
 import { Label } from 'src/components/label';
 import { Iconify } from 'src/components/iconify';
 import { usePopover } from 'src/components/custom-popover';
-import { downloadFile } from 'src/redux/slice/listSlice';
+import { downloadList } from 'src/redux/slice/listSlice';
 
 // ----------------------------------------------------------------------
 
@@ -42,7 +42,7 @@ export function DashboardTableRow({
     dispatch(startVerification()); // Start verification process
   };
   const handleDownload = () => {
-    dispatch(downloadFile(row.jobId));
+    dispatch(downloadList(row.jobId));
   };
   const renderPrimary = (
     <TableRow hover selected={selected}>

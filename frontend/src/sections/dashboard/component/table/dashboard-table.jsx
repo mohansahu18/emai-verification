@@ -48,6 +48,7 @@ import {
   deleteList,
   fetchLists,
   pollJobStatus,
+  fetchChartValues,
   startBulkVerification,
 } from 'src/redux/slice/listSlice';
 import { DashboardTableRow } from './dashboard-table-row';
@@ -205,6 +206,7 @@ export function DashboardTable() {
     const res = await dispatch(deleteList({ jobId: selectedRow.jobId })).unwrap();
     if (res.status === 'success') {
       setTableData((prevData) => prevData.filter((row) => row.jobId !== selectedRow.jobId));
+      dispatch(fetchChartValues());
       setSnackbarState({
         open: true,
         message: 'Email list deleted successfully.',
