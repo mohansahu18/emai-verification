@@ -44,6 +44,7 @@ export function ChartLegends({ labels = [], colors = [], values = [], totalEmail
     <Stack spacing={0} width="100%" px={3} {...other}>
       {allLabels?.map((label, index) => (
         <StyledLegend
+          key={index}
           sx={{
             borderBottom: index === 0 ? '1px dashed' : 'none',
             borderColor: 'divider',
@@ -52,12 +53,14 @@ export function ChartLegends({ labels = [], colors = [], values = [], totalEmail
           }}
         >
           <Tooltip key={label} title={tooltipDescriptions[label] || ''} arrow placement="left">
-            <Box display="flex" alignItems="center" gap={1}>
-              {index !== 0 && <StyledDot sx={{ color: colors[index - 1] }} />}
-              <Typography fontSize="14px" fontWeight={index === 0 ? 800 : 600}>
-                {label}
-              </Typography>
-            </Box>
+            <span>
+              <Box display="flex" alignItems="center" gap={1}>
+                {index !== 0 && <StyledDot sx={{ color: colors[index - 1] }} />}
+                <Typography fontSize="14px" fontWeight={index === 0 ? 800 : 600}>
+                  {label}
+                </Typography>
+              </Box>
+            </span>
           </Tooltip>
           <Typography fontSize="14px" fontWeight={index === 0 ? 800 : 400}>
             {allValues[index]?.toLocaleString()}

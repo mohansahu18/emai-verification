@@ -41,14 +41,16 @@ export default function VerifySingleEmail({ onVerify, email, setEmail, loading }
       </CardContent>
       <CardActions sx={{ px: 3, pb: 3, pt: 0 }}>
         <Tooltip title="Click to verify the email address.">
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={onVerify}
-            disabled={!email.trim() || loading} // Disable button if email is empty
-          >
-            Verify
-          </Button>
+          <span>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={onVerify}
+              disabled={!email.trim() || loading} // Disable button if email is empty
+            >
+              Verify
+            </Button>
+          </span>
         </Tooltip>
       </CardActions>
     </Card>
