@@ -111,26 +111,14 @@ const CreditService = {
         }
     },
 
-    // Get credit details
-    getCreditDetails: async (userId, { page, limit, skip, search, type }) => {
+    // Get credit History details
+    getCreditDetails: async (userId, { page, limit, skip, search, status }) => {
         let filter = { userId: new mongoose.Types.ObjectId(userId) };
         const searchFilter = search ? { "history.description": { $regex: search, $options: "i" } } : {};
 
-        if (type && type !== 'all') {
-            switch (type.toUpperCase()) {
-                case "ADDITION":
-                    filter["history.type"] = "ADDITION";
-                    break;
-                case "DEDUCTION":
-                    filter["history.type"] = "DEDUCTION";
-                    break;
-                case "EMAIL":
-                    filter["history.status"] = "VERIFIED_EMAIL";
-                    break;
-                case "LIST":
-                    filter["history.status"] = "VERIFIED_LIST";
-                    break;
-            }
+        // Handle status filter
+        if (status) {
+            filter["history.status"] = status;
         }
 
         filter = { ...filter, ...searchFilter };
@@ -149,7 +137,18 @@ const CreditService = {
             { $sort: { "history.createdAt": -1 } },
             { $skip: skip },
             { $limit: limit },
-            { $project: { history: 1, _id: 0 } }
+            {
+                $project: {
+                    _id: 0,
+                    history: {
+                        amount: 1,
+                        type: 1,
+                        description: 1,
+                        status: 1,
+                        createdAt: 1
+                    }
+                }
+            }
         ]);
 
         return {

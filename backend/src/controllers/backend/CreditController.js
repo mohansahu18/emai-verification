@@ -33,7 +33,7 @@ const creditController = {
 
             // Handle No Results
             if (creditSummary.length === 0) {
-                return res.status(200).json(Response.succ("No credits found"));
+                return res.status(404).json(Response.error("No credit data found for this user"));
             }
 
             return res.status(200).json(Response.success("Credit summary retrieved successfully", creditSummary[0]));
@@ -93,16 +93,25 @@ const creditController = {
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 10;
         const search = req.query.search || "";
-        const type = req.query.type || "";
+        const frontendStatus = req.query.status || "";
         const skip = (page - 1) * limit;
 
+        const getSchemaStatus = (frontendStatus) => {
+            const statusMap = {
+                'Added': 'ADDED',
+                'Verified Email': 'VERIFIED_EMAIL',
+                'Verified List': 'VERIFIED_LIST'
+            };
+            return statusMap[frontendStatus] || '';
+        };
+        const status = frontendStatus === 'all' ? '' : getSchemaStatus(frontendStatus);
         try {
             const creditDetails = await CreditService.getCreditDetails(req.user.id, {
                 page,
                 limit,
                 skip,
                 search,
-                type,
+                status,
             });
 
             if (creditDetails.data.length > 0) {
