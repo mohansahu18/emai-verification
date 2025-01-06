@@ -27,6 +27,7 @@ import StatsCards from 'src/components/stats-card/stats-card';
 import PageHeader from 'src/components/page-header/page-header';
 
 import { ReportsBarChart } from 'src/sections/reports/component/chart-view/reports-bar-chart';
+import { downloadList } from 'src/redux/slice/listSlice';
 // ----------------------------------------------------------------------
 
 const metadata = { title: `Reports | Pabbly Email Verification` };
@@ -79,6 +80,9 @@ export default function Page() {
   };
 
   const handleDownload = () => {
+    const downloadType = selectedOption;
+    dispatch(downloadList({ jobId: selectedList?.jobId, downloadType }));
+
     handleClose();
   };
 

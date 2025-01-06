@@ -35,10 +35,10 @@ export const fetchListById = createAsyncThunk('list/getList', async (listId) => 
 
 export const downloadList = createAsyncThunk(
   'list/downloadList',
-  async (jobId, { rejectWithValue }) => {
+  async ({ jobId, downloadType = "all" }, { rejectWithValue }) => {
     try {
       // Make a GET request to download the file
-      const response = await axiosInstance.get(`${endpoints.list.download}/${jobId}`, {
+      const response = await axiosInstance.get(`${endpoints.list.download}/${jobId}?type=${downloadType}`, {
         responseType: 'blob', // Important for handling file data
       });
 

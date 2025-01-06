@@ -42,7 +42,7 @@ export function DashboardTableRow({
     dispatch(startVerification()); // Start verification process
   };
   const handleDownload = () => {
-    dispatch(downloadList(row.jobId));
+    dispatch(downloadList({ jobId: row.jobId }));
   };
   const renderPrimary = (
     <TableRow hover selected={selected}>
