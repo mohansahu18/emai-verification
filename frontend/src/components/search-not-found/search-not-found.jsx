@@ -6,9 +6,13 @@ import Typography from '@mui/material/Typography';
 export function SearchNotFound({ query, sx, ...other }) {
   if (!query) {
     return (
-      <Typography variant="body2" sx={sx}>
-        Please enter keywords
-      </Typography>
+      <Box sx={{ textAlign: 'center', borderRadius: 1.5, ...sx }} {...other}>
+        <Typography variant="body2">
+          <strong>Please enter keywords</strong>
+          .
+          <br />
+        </Typography>
+      </Box>
     );
   }
 

@@ -5,18 +5,24 @@ import ListItemButton from '@mui/material/ListItemButton';
 import { varAlpha } from 'src/theme/styles';
 
 import { Label } from 'src/components/label';
+import { setSelectedList } from 'src/redux/slice/listSlice';
+import { useDispatch } from 'react-redux';
 
 // ----------------------------------------------------------------------
 
-export function ResultItem({ title, groupLabel, onClickItem, searchQuery = '' }) {
+export function ResultItem({ item, title, groupLabel, searchQuery = '' }) {
   // Ensure searchQuery is always a string
   const safeSearchQuery = (searchQuery || '').toLowerCase(); // Default to empty string if undefined
 
+  const dispatch = useDispatch();
   // Handle the case where title is a string or array of objects
   const titleParts = Array.isArray(title)
     ? title
     : [{ text: title, highlight: title && title.toLowerCase().includes(safeSearchQuery) }];
 
+  const onClickItem = () => {
+    dispatch(setSelectedList(item));
+  };
   return (
     <ListItemButton
       onClick={onClickItem}

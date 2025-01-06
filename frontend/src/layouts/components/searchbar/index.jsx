@@ -1,67 +1,78 @@
-import { useState, useCallback } from 'react';
-import { useSelector } from 'react-redux';
-
+import { useState, useEffect, useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Box from '@mui/material/Box';
 import SvgIcon from '@mui/material/SvgIcon';
 import { useTheme } from '@mui/material/styles';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import Dialog, { dialogClasses } from '@mui/material/Dialog';
-import { Divider, Tooltip, TextField, Typography, DialogTitle } from '@mui/material';
+import {
+  Divider,
+  Tooltip,
+  TextField,
+  Typography,
+  DialogTitle,
+  CircularProgress,
+} from '@mui/material';
 
 import { varAlpha } from 'src/theme/styles';
-
 import { Iconify } from 'src/components/iconify';
 import { Scrollbar } from 'src/components/scrollbar';
 import { SearchNotFound } from 'src/components/search-not-found';
-
+import { clearSearch, searchLists, setSearchQuery } from 'src/redux/slice/listSlice';
 import { ResultItem } from './result-item';
 
-// ----------------------------------------------------------------------
-const data = [
-  { title: 'pabbly_connect_users_email_list.csv' },
-  { title: 'pabbly_chatflow_users_email_list.csv' },
-  { title: 'clothing_users_email_list.csv' },
-];
 export default function Searchbar({ sx, ...other }) {
   const theme = useTheme();
-  const [searchQuery, setSearchQuery] = useState('');
+  const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
-  const selectedList = useSelector((state) => state.list.selectedList);
+
+  const { searchQuery, searchResults, loading, error, selectedList } = useSelector(
+    (state) => state.list
+  );
+
   const handleOpen = () => setIsOpen(true);
   const handleClose = () => {
     setIsOpen(false);
-    setSearchQuery('');
+    dispatch(clearSearch());
   };
+
+  // Debounce search to prevent excessive API calls
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      if (searchQuery) {
+        dispatch(searchLists(searchQuery));
+      }
+    }, 300);
+
+    return () => clearTimeout(timeoutId);
+  }, [searchQuery, dispatch]);
 
   const handleSearch = (event) => {
-    setSearchQuery(event.target.value);
+    dispatch(setSearchQuery(event.target.value));
   };
 
-  const filteredData = data.filter((item) =>
-    item.title.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
   const handleItemClick = (item) => {
-    // onSelectItem(item); // Call parent function to update card title
+    // Handle item selection logic here
     handleClose();
   };
 
   const handleClearSearch = useCallback(() => {
-    setSearchQuery('');
-  }, []);
+    dispatch(clearSearch());
+  }, [dispatch]);
 
   const renderItems = () => (
     <Box component="ul">
-      {filteredData.map((item) => (
+      {searchResults.listData?.map((item) => (
         <Box
           component="li"
-          key={item.title} // Use title for unique key instead of item.path
+          key={item.id}
           sx={{ display: 'flex' }}
-          onClick={() => handleItemClick(item)} // Update title when item is clicked
+          onClick={() => handleItemClick(item)}
         >
           <ResultItem
-            title={item.title}
+            item={item}
+            title={item.title || item.listName}
             groupLabel={searchQuery && 'Filtered'}
             searchQuery={searchQuery}
           />
@@ -69,6 +80,7 @@ export default function Searchbar({ sx, ...other }) {
       ))}
     </Box>
   );
+
   const renderButton = (
     <Tooltip title="Search Lists to see reports." arrow placement="bottom">
       <Box
@@ -102,21 +114,23 @@ export default function Searchbar({ sx, ...other }) {
           Search report by list here.
         </Typography>
 
-        <Typography
-          fontWeight={600}
-          sx={{
-            p: 0.5,
-            borderRadius: 1,
-            ml: 1,
-            fontSize: 12,
-            color: 'grey.800',
-            bgcolor: 'common.white',
-            boxShadow: theme.customShadows.z1,
-            display: { xs: 'none', md: 'inline-flex' },
-          }}
-        >
-          {selectedList?.listName}
-        </Typography>
+        {selectedList?.listName && (
+          <Typography
+            fontWeight={600}
+            sx={{
+              p: 0.5,
+              borderRadius: 1,
+              ml: 1,
+              fontSize: 12,
+              color: 'grey.800',
+              bgcolor: 'common.white',
+              boxShadow: theme.customShadows.z1,
+              display: { xs: 'none', md: 'inline-flex' },
+            }}
+          >
+            {selectedList.listName}
+          </Typography>
+        )}
       </Box>
     </Tooltip>
   );
@@ -150,6 +164,7 @@ export default function Searchbar({ sx, ...other }) {
           </DialogTitle>
           <Divider sx={{ borderStyle: 'dashed' }} />
         </Box>
+
         <Box sx={{ p: 2 }}>
           <Tooltip title="Enter the email list name." arrow placement="top">
             <TextField
@@ -162,7 +177,11 @@ export default function Searchbar({ sx, ...other }) {
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <Iconify icon="eva:search-fill" width={24} height={24} />
+                    {loading ? (
+                      <CircularProgress size={24} />
+                    ) : (
+                      <Iconify icon="eva:search-fill" width={24} height={24} />
+                    )}
                   </InputAdornment>
                 ),
                 endAdornment: searchQuery ? (
@@ -181,9 +200,14 @@ export default function Searchbar({ sx, ...other }) {
             />
           </Tooltip>
         </Box>
-        {/* Dialog Content */}
 
-        {filteredData.length === 0 ? (
+        {error && (
+          <Box sx={{ p: 3, textAlign: 'center' }}>
+            <Typography color="error">{error}</Typography>
+          </Box>
+        )}
+
+        {!loading && searchResults.length === 0 ? (
           <SearchNotFound query={searchQuery} sx={{ py: 15 }} />
         ) : (
           <Scrollbar sx={{ px: 3, pb: 3, pt: 0, height: 400 }}>{renderItems()}</Scrollbar>

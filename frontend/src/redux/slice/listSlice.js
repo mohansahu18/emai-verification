@@ -22,7 +22,23 @@ export const fetchLists = createAsyncThunk('list/',
   },
 );
 
+export const searchLists = createAsyncThunk(
+  'list/search',
+  async (searchQuery = '') => {
+    try {
+      const response = await axiosInstance.get(endpoints.list.get, {
+        params: { search: searchQuery }
+      });
 
+      return {
+        data: response.data.data,
+        stats: response.data.data.stats,
+      };
+    } catch (error) {
+      throw error.message;
+    }
+  }
+);
 export const fetchListById = createAsyncThunk('list/getList', async (listId) => {
   try {
     const response = await axiosInstance.get(`${endpoints.list.get}/${listId}`)
@@ -133,6 +149,8 @@ const listSlice = createSlice({
     completedLists: [],
     unprocessedLists: [],
     processingLists: [],
+    searchResults: [],
+    searchQuery: '',
     stats: {},
     chartValues: {},
     selectedList: {},
@@ -145,9 +163,18 @@ const listSlice = createSlice({
     downloadedFile: null,
   },
   reducers: {
-
+    setSearchQuery: (state, action) => {
+      state.searchQuery = action.payload;
+    },
+    clearSearch: (state) => {
+      state.searchQuery = '';
+      state.searchResults = [];
+    },
     setSelectedListIndex: (state, action) => {
       state.selectedListIndex = action.payload;
+    },
+    setSelectedList: (state, action) => {
+      state.selectedList = action.payload;
     },
     setList: (state, action) => {
       state.data.listData = action.payload;
@@ -256,9 +283,22 @@ const listSlice = createSlice({
       .addCase(downloadList.rejected, (state, action) => {
         state.downloadLoading = false;
         state.downloadError = action.payload;
+      })
+      // search list
+      .addCase(searchLists.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(searchLists.fulfilled, (state, action) => {
+        state.loading = false;
+        state.searchResults = action.payload.data;
+      })
+      .addCase(searchLists.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
       });
   },
 });
 
-export const { lists, setSelectedListIndex, setList, setChartValues, unprocessedLists, completedLists, setCompletedList, setUnprocessedList } = listSlice.actions;
+export const { lists, setSelectedListIndex, setList, setSelectedList, setChartValues, unprocessedLists, completedLists, setCompletedList, setUnprocessedList, clearSearch, setSearchQuery } = listSlice.actions;
 export default listSlice.reducer;
