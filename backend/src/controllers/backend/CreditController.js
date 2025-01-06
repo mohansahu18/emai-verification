@@ -33,7 +33,7 @@ const creditController = {
 
             // Handle No Results
             if (creditSummary.length === 0) {
-                return res.status(404).json(Response.error("No credit data found for this user"));
+                return res.status(200).json(Response.succ("No credits found"));
             }
 
             return res.status(200).json(Response.success("Credit summary retrieved successfully", creditSummary[0]));
