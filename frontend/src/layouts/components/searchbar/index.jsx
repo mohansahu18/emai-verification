@@ -207,7 +207,7 @@ export default function Searchbar({ sx, ...other }) {
           </Box>
         )}
 
-        {!loading && searchResults.length === 0 ? (
+        {!loading && searchResults?.listData?.length === 0 ? (
           <SearchNotFound query={searchQuery} sx={{ py: 15 }} />
         ) : (
           <Scrollbar sx={{ px: 3, pb: 3, pt: 0, height: 400 }}>{renderItems()}</Scrollbar>

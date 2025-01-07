@@ -28,7 +28,7 @@ export default function TimeZonePage() {
   const searchInputRef = useRef(null);
   const theme = useTheme();
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const { timeZones, loading, error, selectedTimeZone } = useSelector((state) => state.timeZone);
+  const { timeZones, selectedTimeZone } = useSelector((state) => state.timeZone);
   const dispatch = useDispatch();
 
   // Memoize filtered timezones
@@ -113,19 +113,12 @@ export default function TimeZonePage() {
           title={
             <Box>
               <Box sx={{ typography: 'subtitle2', fontSize: '18px', fontWeight: 600 }}>
-                {/* <Tooltip
-                  title="Choose the time zone for your account. All the date and time in your account will align with the time zone that you set here."
-                  arrow
-                  placement="top"
-                >
-                  Time Zone
-                </Tooltip> */}
                 <Tooltip
                   title="Choose the time zone for your account. All the date and time in your account will align with the time zone that you set here."
                   arrow
                   placement="top"
                 >
-                  <span>Time Zone</span> {/* Wrapping the string in a span */}
+                  <span>Time Zone</span>
                 </Tooltip>
               </Box>
             </Box>

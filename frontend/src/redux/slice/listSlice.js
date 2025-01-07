@@ -27,7 +27,7 @@ export const searchLists = createAsyncThunk(
   async (searchQuery = '') => {
     try {
       const response = await axiosInstance.get(endpoints.list.get, {
-        params: { search: searchQuery }
+        params: { search: searchQuery, limit: 100 }
       });
 
       return {

@@ -95,7 +95,6 @@ export function AnimateText({
         animate={controls}
         exit="exit"
         variants={varContainer()}
-        aria-hidden
         className={animateTextClasses.lines}
       >
         {textArray.map((line, lineIndex) => (
