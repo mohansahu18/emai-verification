@@ -122,13 +122,13 @@ export function CreditTable() {
   const [searchValue, setSearchValue] = useState('');
   const selectedTimeZone = useSelector((state) => state.timeZone.selectedTimeZone);
 
-  const theme = useTheme();
-
   const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
     if (history.data && history.data.length > 0) {
       setTableData(transformData(history.data, selectedTimeZone));
+    } else {
+      setTableData([]);
     }
   }, [history, selectedTimeZone]);
 
@@ -149,7 +149,7 @@ export function CreditTable() {
     filters.state.status !== 'all' ||
     (!!filters.state.startDate && !!filters.state.endDate);
 
-  const notFound = (!dataFiltered.length && canReset) || !dataFiltered.length;
+  const notFound = !history.data?.length || (!dataFiltered.length && canReset);
 
   const handleFilterStatus = useCallback(
     (event, newValue) => {
@@ -267,10 +267,10 @@ export function CreditTable() {
                 </>
               ) : (
                 <TableNoData
-                  title={filters.state.name ? 'No Search Results' : 'No Data Available'}
+                  title={searchValue ? 'No Search Results' : 'No Data Available'}
                   description={
-                    filters.state.name
-                      ? `No results found for "${filters.state.name}"`
+                    searchValue
+                      ? `No results found for "${searchValue}"`
                       : 'No data available in the table'
                   }
                   notFound={notFound}
