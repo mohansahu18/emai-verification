@@ -83,8 +83,13 @@ export function CreditTableRow({ row, selected }) {
         </Tooltip>
       </TableCell>
 
-      <TableCell width={140}>
-        <Tooltip arrow placement="top" disableInteractive title={`Action: ${row.action}`}>
+      <TableCell width={140} align="right">
+        <Tooltip
+          arrow
+          placement="top"
+          disableInteractive
+          title={`Status: ${row.credits === 'Alloted' ? `Credits Alloted ${row.noOfCredits}` : `Credits Consumed ${row.noOfCredits}`}`}
+        >
           <Box
             component="span"
             sx={{
@@ -96,21 +101,8 @@ export function CreditTableRow({ row, selected }) {
               display: 'inline-block',
             }}
           >
-            {row.action}
-          </Box>
-        </Tooltip>
-      </TableCell>
-
-      <TableCell width={140} align="right">
-        <Tooltip
-          arrow
-          placement="top"
-          disableInteractive
-          title={`Status: ${row.credits === 'Alloted' ? `Credits Alloted ${row.noOfCredits}` : `Credits Consumed ${row.noOfCredits}`}`}
-        >
-          <Label variant="soft" color={row.credits === 'Alloted' ? 'success' : 'error'}>
             {row.credits === 'Alloted' ? row.noOfCredits : `-${row.noOfCredits}`}
-          </Label>
+          </Box>
         </Tooltip>
       </TableCell>
     </TableRow>
