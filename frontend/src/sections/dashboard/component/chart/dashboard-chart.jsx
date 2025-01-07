@@ -46,12 +46,7 @@ export function DashboardChart({ title, subheader, showAlert, chart, handleAlert
   const { deliverable, undeliverable, acceptAll, unknown } = useSelector(
     (state) => state.list.chartValues
   );
-  const totalEmail =
-    parseInt(deliverable, 10) ||
-    0 + parseInt(undeliverable, 10) ||
-    0 + parseInt(acceptAll, 10) ||
-    0 + parseInt(unknown, 10) ||
-    0;
+
   const dispatch = useDispatch();
 
   const handleClose = () => {
@@ -220,7 +215,7 @@ export function DashboardChart({ title, subheader, showAlert, chart, handleAlert
               colors={chartOptions.colors}
               // values={[156454, 12244, 43313, 53345, 78343]} // Add the email counts here
               values={[deliverable, undeliverable, acceptAll, unknown]} // Add the email counts here
-              totalEmails={totalEmail}
+              totalEmails={deliverable + undeliverable + acceptAll + unknown}
               sx={{
                 py: 2,
                 flexDirection: 'column',
