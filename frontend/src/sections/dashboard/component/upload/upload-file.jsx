@@ -20,13 +20,13 @@ export default function Upload({ setAlertState }) {
           <Box display="inline-block">
             <Tooltip title="Verify multiple emails here with a CSV file." arrow placement="top">
               <Typography variant="h6">
-                Verify Bulk Emails (Upload CSV File for Email Verification){' '}
+                Verify Bulk Emails (Upload CSV File for Email Verification)
               </Typography>
             </Tooltip>
           </Box>
         }
         subheader={
-          <>
+          <Typography>
             Only CSV files allowed. Download{' '}
             <Tooltip title="Click to download the sample file." arrow placement="top">
               <Link
@@ -35,10 +35,10 @@ export default function Upload({ setAlertState }) {
                 style={{ color: '#078DEE' }}
               >
                 Sample File
-              </Link>{' '}
-            </Tooltip>
+              </Link>
+            </Tooltip>{' '}
             here.
-          </>
+          </Typography>
         }
       />
       <Divider />

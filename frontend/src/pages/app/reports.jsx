@@ -219,11 +219,11 @@ export default function Page() {
               series: [
                 {
                   data: [
-                    selectedList?.totalEmails,
-                    deliverable,
-                    undeliverable,
-                    accept_all,
-                    unknown,
+                    selectedList?.totalEmails || 0,
+                    deliverable || 0,
+                    undeliverable || 0,
+                    accept_all || 0,
+                    unknown || 0,
                   ],
                 },
               ],

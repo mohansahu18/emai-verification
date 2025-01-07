@@ -175,7 +175,7 @@ export function DashboardChart({ title, subheader, showAlert, chart, handleAlert
                   disableInteractive
                   title="Summary of email verification results for all lists."
                 >
-                  All Lists Summary
+                  <span>All Lists Summary</span>
                 </Tooltip>
               </Typography>
             }

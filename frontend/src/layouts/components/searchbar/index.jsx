@@ -66,7 +66,7 @@ export default function Searchbar({ sx, ...other }) {
       {searchResults.listData?.map((item) => (
         <Box
           component="li"
-          key={item.id}
+          key={item.jobId}
           sx={{ display: 'flex' }}
           onClick={() => handleItemClick(item)}
         >
