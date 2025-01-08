@@ -237,7 +237,7 @@ export default function Page() {
           {dialog.mode === 'download' && (
             <>
               <DialogTitle sx={{ p: 0, mb: 2 }}>
-                <Typography variant="h6">Download Verification Result</Typography>
+                Download Verification Result
                 <IconButton
                   onClick={handleClose}
                   sx={{

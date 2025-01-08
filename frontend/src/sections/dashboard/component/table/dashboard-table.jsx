@@ -204,6 +204,8 @@ export function DashboardTable() {
   const handleDelete = async () => {
     confirmDelete.onFalse();
     const res = await dispatch(deleteList({ jobId: selectedRow.jobId })).unwrap();
+    handleClosePopover();
+
     if (res.status === 'success') {
       setTableData((prevData) => prevData.filter((row) => row.jobId !== selectedRow.jobId));
       dispatch(fetchChartValues());
@@ -219,6 +221,10 @@ export function DashboardTable() {
         severity: 'danger',
       });
     }
+  };
+  const handleOnClose = () => {
+    confirmDelete.onFalse();
+    handleClosePopover();
   };
 
   useEffect(() => {
@@ -394,7 +400,7 @@ export function DashboardTable() {
       </CustomPopover>
       <ConfirmDialog
         open={confirmDelete.value}
-        onClose={confirmDelete.onFalse}
+        onClose={handleOnClose}
         title="Delete"
         content="Are you sure you want to delete this email list?"
         action={

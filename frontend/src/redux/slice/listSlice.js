@@ -57,9 +57,16 @@ export const downloadList = createAsyncThunk(
       const response = await axiosInstance.get(`${endpoints.list.download}/${jobId}?type=${downloadType}`, {
         responseType: 'blob', // Important for handling file data
       });
-
-      // If the response is successful, return the file data as a Blob
-      return response.data;
+      const url = window.URL.createObjectURL(response.data);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `download_${jobId}.csv`; // You can customize the filename
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+      // Return a simple success flag instead of the Blob
+      return { success: true, jobId };
     } catch (error) {
       // Return error message if the download fails
       return rejectWithValue(error.response?.data || error.message);
@@ -268,17 +275,8 @@ const listSlice = createSlice({
         state.downloadError = null;
       })
       .addCase(downloadList.fulfilled, (state, action) => {
-        // Handle successful file download, trigger the download in the browser
         state.downloadLoading = false;
-        state.downloadedFile = action.payload;
-
-        // Trigger the file download in the browser (download logic)
-        const url = window.URL.createObjectURL(action.payload);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = 'downloaded_file'; // You can specify the filename here
-        document.body.appendChild(link);
-        link.click();
+        state.lastDownloadedJobId = action.payload.jobId;
       })
       .addCase(downloadList.rejected, (state, action) => {
         state.downloadLoading = false;

@@ -31,7 +31,9 @@ export const fetchCreditBalance = createAsyncThunk(
 const creditSlice = createSlice({
     name: 'credits',
     initialState: {
-        history: [],
+        history: {
+            data: [],
+        },
         totalCredits: 0,
         usedCredits: 0,
         remainingCredits: 0,
@@ -47,7 +49,7 @@ const creditSlice = createSlice({
                 state.usedCredits += amount;
 
                 // Update history
-                state.history.push({
+                state.history.data.push({
                     amount,
                     type: 'DEDUCTION',
                     description: action.payload.description || 'Credit deducted',
